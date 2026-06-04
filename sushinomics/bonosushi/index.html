@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonosushi: la renta fija explicada con sushi</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fdfaf5;
+  --card: #ffffff;
+  --border: #e8e0d0;
+  --text: #1a1208;
+  --muted: #8a7a60;
+  --orange: #e05c2a;
+  --orange-light: #fff3ee;
+  --blue: #2a6ee0;
+  --blue-light: #eef3ff;
+  --green: #1a9e5c;
+  --green-light: #edfff6;
+  --yellow: #d4920a;
+  --yellow-light: #fffbeb;
+  --red: #cc2222;
+  --red-light: #fff2f2;
+  --shadow: 0 2px 20px rgba(0,0,0,0.07);
+  --r: 20px;
+  --font: 'Nunito', sans-serif;
+  --body: 'Nunito Sans', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+.top-stripe { height:5px; background:linear-gradient(90deg,#e05c2a 0%,#e0a52a 33%,#1a9e5c 66%,#2a6ee0 100%); }
+.wrap { max-width:700px; margin:0 auto; padding:2rem 1.25rem 5rem; }
+
+/* HERO */
+.hero { text-align:center; padding:2rem 0 1.5rem; }
+.hero-emoji { font-size:3.5rem; display:block; margin-bottom:.6rem; animation:bob 3s ease-in-out infinite; }
+@keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+h1 { font-family:var(--font); font-weight:900; font-size:clamp(1.55rem,5vw,2.3rem); line-height:1.12; margin-bottom:.7rem; }
+h1 .hl { color:var(--orange); background:var(--orange-light); border-radius:8px; padding:1px 7px; }
+.hero-sub { font-size:.95rem; color:var(--muted); max-width:460px; margin:0 auto; }
+.saga-pill { display:inline-block; font-family:var(--font); font-weight:800; font-size:.7rem; letter-spacing:.5px; text-transform:uppercase; color:var(--orange); background:var(--orange-light); border:1.5px solid #f4c4a8; border-radius:20px; padding:3px 12px; margin-bottom:1rem; }
+
+/* SECTION */
+.sec { margin-bottom:2rem; }
+.sec-title { font-family:var(--font); font-weight:900; font-size:1.1rem; display:flex; align-items:center; gap:8px; margin-bottom:.4rem; }
+.sec-intro { font-size:.88rem; color:var(--muted); margin-bottom:.9rem; line-height:1.6; }
+
+/* CARD */
+.card { background:var(--card); border:1.5px solid var(--border); border-radius:var(--r); padding:1.4rem 1.6rem; box-shadow:var(--shadow); margin-bottom:1rem; }
+.card.accent-orange { border-left:5px solid var(--orange); }
+.card.accent-blue   { border-left:5px solid var(--blue); }
+.card.accent-green  { border-left:5px solid var(--green); }
+.card.accent-red    { border-left:5px solid var(--red); }
+.card h3 { font-family:var(--font); font-weight:800; font-size:1rem; margin-bottom:.45rem; display:flex; align-items:center; gap:7px; }
+.card p { font-size:.92rem; line-height:1.75; color:#2e2010; }
+.card p strong { font-weight:700; }
+.card p em { font-style:italic; color:var(--muted); }
+
+.quote { margin-top:.7rem; padding-left:.8rem; border-left:3px solid var(--orange-light); font-style:italic; }
+
+.callout { background:var(--orange-light); border:1.5px solid #f4c4a8; border-radius:13px; padding:.85rem 1.1rem; margin-top:.9rem; font-size:.88rem; line-height:1.7; position:relative; }
+.callout::before { content:'💬'; position:absolute; top:-12px; left:14px; font-size:1.1rem; }
+
+/* TRAY PRICE PILL */
+.tray-price { display:inline-flex; align-items:center; gap:4px; background:var(--orange-light); border:1.5px solid #f4c4a8; border-radius:20px; padding:2px 10px 2px 6px; font-family:var(--font); font-weight:800; font-size:.85rem; color:var(--orange); white-space:nowrap; }
+.tray-price.new { background:var(--blue-light); border-color:#a8c4f4; color:var(--blue); }
+
+/* TIMELINE */
+.timeline { display:flex; align-items:stretch; margin:1rem 0 .5rem; border-radius:12px; overflow:hidden; border:1.5px solid var(--border); }
+.tl-item { flex:1; background:var(--card); padding:.7rem .4rem; text-align:center; border-right:1px solid var(--border); font-size:.74rem; font-family:var(--font); font-weight:700; color:var(--muted); display:flex; flex-direction:column; align-items:center; gap:3px; }
+.tl-item:last-child { border-right:none; }
+.tl-item.dots { flex:.5; justify-content:center; font-size:1.1rem; color:var(--muted); background:#faf6ef; }
+.tl-item.big { background:#edfff6; color:var(--green); flex:1.6; }
+.tl-amount { font-size:.9rem; color:var(--text); }
+.tl-item.big .tl-amount { font-size:1rem; color:var(--green); }
+
+hr { border:none; border-top:1.5px dashed var(--border); margin:2.25rem 0; }
+
+/* PLAYGROUND */
+.playground { background:var(--card); border:1.5px solid var(--border); border-radius:var(--r); overflow:hidden; box-shadow:var(--shadow); }
+.pg-header { background:var(--text); color:#fff; padding:1rem 1.5rem; font-family:var(--font); font-weight:800; font-size:1rem; display:flex; align-items:center; gap:8px; }
+.pg-body { padding:1.5rem; }
+.sim-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:1.35rem; align-items:start; }
+.sim-controls, .sim-results { min-width:0; }
+.sim-results .sushi-comp { margin-top:0; }
+@media (max-width:720px) { .sim-grid { grid-template-columns:1fr; } }
+
+/* SLIDERS */
+.sl-block { margin-bottom:1.6rem; }
+.sl-q { font-family:var(--font); font-weight:800; font-size:.92rem; margin-bottom:.3rem; }
+.sl-hint { font-size:.8rem; color:var(--muted); margin-bottom:.7rem; line-height:1.5; }
+.sl-row { display:flex; align-items:center; gap:12px; }
+.sl-val { font-family:var(--font); font-weight:900; font-size:1.4rem; min-width:84px; text-align:right; transition:color .3s; }
+input[type=range] { -webkit-appearance:none; appearance:none; flex:1; height:6px; border-radius:6px; outline:none; cursor:pointer; }
+input[type=range].green-track { background:linear-gradient(90deg, var(--green) var(--p,56%), #ddd var(--p,56%)); }
+input[type=range].blue-track  { background:linear-gradient(90deg, var(--blue) var(--p,80%), #ddd var(--p,80%)); }
+input[type=range].orange-track { background:linear-gradient(90deg, var(--orange) var(--p,60%), #ddd var(--p,60%)); }
+input[type=range].orange-track { background:linear-gradient(90deg, var(--orange) var(--p,60%), #ddd var(--p,60%)); }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:#fff; border:3px solid #999; box-shadow:0 2px 6px rgba(0,0,0,.15); cursor:pointer; transition:transform .12s; }
+input[type=range]::-webkit-slider-thumb:active { transform:scale(1.25); }
+input[type=range].green-track::-webkit-slider-thumb { border-color:var(--green); }
+input[type=range].blue-track::-webkit-slider-thumb  { border-color:var(--blue); }
+input[type=range].orange-track::-webkit-slider-thumb { border-color:var(--orange); }
+input[type=range].orange-track::-webkit-slider-thumb { border-color:var(--orange); }
+input[type=range]::-moz-range-thumb { width:22px; height:22px; border-radius:50%; background:#fff; border:3px solid #999; box-shadow:0 2px 6px rgba(0,0,0,.15); cursor:pointer; }
+input[type=range].green-track::-moz-range-thumb { border-color:var(--green); }
+input[type=range].blue-track::-moz-range-thumb  { border-color:var(--blue); }
+input[type=range].orange-track::-moz-range-thumb { border-color:var(--orange); }
+input[type=range].orange-track::-moz-range-thumb { border-color:var(--orange); }
+input[type=range]::-moz-range-track { height:6px; border-radius:6px; background:transparent; }
+.sl-ends { display:flex; justify-content:space-between; font-size:.75rem; color:var(--muted); margin-top:3px; }
+
+/* BRIDGE microfrase */
+.bridge { font-size:.78rem; color:var(--muted); background:#faf6ef; border-radius:10px; padding:.55rem .8rem; margin-top:.6rem; line-height:1.5; }
+.bridge strong { color:var(--text); font-weight:700; }
+
+/* WARNING */
+.warn { border-radius:12px; padding:.7rem 1rem; margin-top:.7rem; font-size:.83rem; line-height:1.55; font-weight:600; font-family:var(--body); display:none; }
+.warn.show { display:block; }
+.warn.w-info { background:var(--blue-light); border:1.5px solid #a8c4f4; color:#1a4ea0; }
+.warn.w-mild { background:var(--yellow-light); border:1.5px solid #f0d080; color:#8a5e00; }
+.warn.w-bad  { background:var(--red-light); border:1.5px solid #f4a0a0; color:#a31515; }
+
+/* TRAY COMPARATOR */
+.sushi-comp { background:#fffdf8; border:1.5px dashed var(--border); border-radius:14px; padding:1.1rem 1.25rem; margin:1.1rem 0; }
+.sushi-comp-title { font-family:var(--font); font-weight:800; font-size:.82rem; color:var(--muted); margin-bottom:1rem; text-align:center; line-height:1.5; }
+.sushi-bars { display:flex; justify-content:center; align-items:flex-end; gap:30px; }
+.sushi-col { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.sushi-col-label { font-family:var(--font); font-weight:700; font-size:.78rem; text-align:center; max-width:120px; }
+.tray-stack { display:flex; flex-direction:column-reverse; align-items:center; gap:3px; min-height:30px; justify-content:flex-end; }
+.tray-emoji { font-size:1.4rem; line-height:1; transition:opacity .3s; }
+.bar-count { font-family:var(--font); font-weight:900; font-size:1.15rem; transition:color .4s; }
+.sushi-verdict { text-align:center; font-size:.82rem; color:var(--muted); margin-top:1rem; line-height:1.5; font-style:italic; }
+
+/* PRICE RESULT */
+.price-result { border-radius:14px; padding:1.1rem 1.4rem; margin-top:1.1rem; border:2px solid transparent; transition:background .4s, border-color .4s; }
+.price-result.bad  { background:var(--red-light); border-color:#f4a0a0; }
+.price-result.ok   { background:var(--yellow-light); border-color:#f0d080; }
+.price-result.good { background:var(--green-light); border-color:#80dca8; }
+.pr-top { display:flex; align-items:center; gap:10px; margin-bottom:.4rem; }
+.pr-icon { font-size:1.6rem; }
+.pr-headline { font-family:var(--font); font-weight:900; font-size:1rem; }
+.pr-body { font-size:.88rem; line-height:1.72; color:#2e2010; }
+.pr-body strong { font-weight:700; }
+
+/* METER */
+.meter-wrap { margin:1rem 0 .25rem; }
+.meter-top { display:flex; justify-content:space-between; font-size:.78rem; color:var(--muted); margin-bottom:4px; font-family:var(--font); font-weight:700; }
+.meter-track { height:18px; background:#eee; border-radius:9px; overflow:hidden; position:relative; }
+.meter-fill { height:100%; border-radius:9px; transition:width .5s cubic-bezier(.4,0,.2,1), background .4s; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; }
+.meter-fill span { font-family:var(--font); font-weight:900; font-size:11px; color:#fff; white-space:nowrap; }
+.meter-par { position:absolute; left:50%; top:-3px; bottom:-3px; width:2px; background:var(--text); opacity:.2; }
+.meter-axis { display:flex; justify-content:space-between; font-size:.7rem; color:var(--muted); margin-top:4px; font-family:var(--font); font-weight:700; }
+
+/* STEPS */
+.steps { border:1.5px solid var(--border); border-radius:var(--r); overflow:hidden; box-shadow:var(--shadow); }
+.step { background:var(--card); padding:1rem 1.4rem; display:flex; gap:.9rem; border-bottom:1px solid var(--border); transition:background .15s; }
+.step:last-child { border-bottom:none; }
+.step:hover { background:#fef9f4; }
+.step-num { min-width:32px; height:32px; border-radius:50%; background:var(--orange-light); border:2px solid #f4c4a8; display:flex; align-items:center; justify-content:center; font-size:.95rem; margin-top:3px; }
+.step-txt { font-size:.88rem; line-height:1.72; }
+.step-txt strong { color:var(--orange); font-weight:700; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+@media (prefers-reduced-motion: no-preference) {
+  .sec { animation:fadeUp .5s ease both; }
+  .sec:nth-child(1){animation-delay:.05s}
+  .sec:nth-child(2){animation-delay:.12s}
+  .sec:nth-child(3){animation-delay:.19s}
+  .sec:nth-child(4){animation-delay:.26s}
+  .sec:nth-child(5){animation-delay:.33s}
+  .sec:nth-child(6){animation-delay:.4s}
+}
+@media (prefers-reduced-motion: reduce) { .hero-emoji { animation:none; } }
+
+footer { text-align:center; font-size:.75rem; color:var(--muted); padding-top:1.5rem; line-height:1.9; }
+</style>
+</head>
+<body>
+<div class="top-stripe"></div>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="hero-emoji">🍣</span>
+    <div class="saga-pill">🍣 Saga Sushinomics · nº1</div>
+    <h1>El sushi siempre llega<br><span class="hl">(si esperas)</span></h1>
+    <p class="hero-sub">Bonosushi: la renta fija explicada con sushi. Sin jerga financiera.</p>
+  </div>
+
+  <hr>
+
+  <!-- BLOQUE 1: LA INTUICIÓN (sin números, solo los imprescindibles) -->
+  <div class="sec">
+    <div class="sec-title">🍣 Empecemos por la idea</div>
+    <p class="sec-intro">Olvídate de bonos y finanzas un momento. Vamos con sushi.</p>
+
+    <div class="card accent-orange">
+      <h3>🍱 Un restaurante te ofrece Bonosushi</h3>
+      <p>
+        Imagina que tu restaurante de sushi favorito necesita dinero para reformar la cocina. Te propone esto:
+      </p>
+      <p class="quote">
+        "Dame <strong>1000€</strong> hoy. A cambio, te entrego <strong>un Bandejote Bonosushi Premium valorado en 300€ cada año durante 25 años</strong> — un catering de sushi para compartir, no una bandejita — y al final, te devuelvo tus 1000€ enteros." 🍱
+      </p>
+      <p style="margin-top:.7rem;">
+        Piénsalo: <strong>si el restaurante cumple y esperas hasta el final, recuperas tus 1000€</strong>, y mientras tanto recibes <strong>25 banquetes premium de sushi, valorados en 300€ cada uno</strong>. <strong>Eso es un bono.</strong> El "restaurante" en la vida real es un gobierno o una empresa, y el "bandejote" es el pago que te dan por prestarles el dinero.
+      </p>
+      <div class="callout">
+        El restaurante siempre cumple. Pero imagina que han pasado 5 años y te vas a mudar lejos. Ya no podrás ir a recoger tu bandejote premium. ¿Y si vendieses tu Bonosushi a otra persona? ¿Cuánto crees que te pagarían? 👇
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- BLOQUE 1b: CUÁNTO VALDRÍA VENDER EL TRATO -->
+  <div class="sec">
+    <div class="sec-title">🤔 ¿Cuánto te pagarían por tu Bonosushi?</div>
+    <p class="sec-intro">Sin inflación, sin competencia. Solo la pregunta pura: ¿qué vale tu Bonosushi según cuánto le queda?</p>
+
+    <div class="card accent-green">
+      <div style="background:var(--green-light); border:1.5px solid #80dca8; border-radius:12px; padding:.8rem 1rem; margin-bottom:1rem; font-size:.83rem; line-height:1.55; font-weight:600; color:#065041;">
+        ⚠️ <strong>Aviso:</strong> Este primer mundo es casi mágico: sin inflación, sin competencia y con un restaurante capaz de crear sushi casi gratis. Por eso Bonosushi parece un chollazo absurdo: para ti el bandejote vale 300€, pero al restaurante apenas le cuesta producirlo. Es la parte que se parece a un gobierno que emite deuda en su propia moneda: puede crear el dinero para pagar, aunque no puede crear poder adquisitivo real sin consecuencias.
+      </div>
+
+      <h3>🍱 La fórmula: todo lo que queda por cobrar</h3>
+      <p style="margin-bottom:1rem;">
+        En este mundo mágico, el valor bruto de lo prometido es: <strong>todos los bandejotes premium restantes + los 1000€ del final</strong>. No significa que en un mercado real alguien pagase automáticamente esa cantidad.
+      </p>
+      
+      <div style="background:#f5f3f0; border-radius:10px; padding:1rem; margin-bottom:1rem; font-family:monospace; font-size:.9rem; text-align:center; color:#1a1208; line-height:1.8; overflow-x:auto;">
+        <div style="margin-bottom:.5rem;">Precio = (años restantes × 300€) + 1000€</div>
+      </div>
+
+      <p style="margin-bottom:1rem;">
+        Por ejemplo:
+      </p>
+      <ul style="margin-left:1.5rem; font-size:.92rem; line-height:1.75; color:#2e2010;">
+        <li><strong>Año 0</strong> (recién firmado): valor bruto prometido = (25 × 300€) + 1000€ = <strong>8500€</strong></li>
+        <li><strong>Año 5</strong> (como en tu mudanza): valor bruto prometido = (20 × 300€) + 1000€ = <strong>7000€</strong></li>
+        <li><strong>Año 24</strong> (casi al final): valor bruto prometido = (1 × 300€) + 1000€ = <strong>1300€</strong></li>
+        <li><strong>Año 25</strong> (último año): (0 × 300€) + 1000€ = <strong>1000€</strong></li>
+      </ul>
+
+      <div class="callout" style="background:var(--green-light); border-color:#80dca8; margin-top:1rem;">
+        La intuición: <strong>cuantos más bandejotes premium le quedan al comprador, más vale el trato.</strong> Conforme pasan los años, hay menos sushi por venir — así que el precio cae en línea recta hacia los 1000€ que el restaurante siempre devuelve.
+      </div>
+    </div>
+
+    <!-- SLIDER AÑOS TRANSCURRIDOS -->
+    <div class="card">
+      <h3>🎚️ Mueve el tiempo y mira cómo cambia el precio de Bonosushi</h3>
+      <p style="margin-bottom:1rem; font-size:.88rem; color:#2e2010;">
+        En este escenario mágico sin inflación ni competencia, el precio representa el valor bruto de todo lo que queda por cobrar.
+      </p>
+
+      <div class="sl-block" style="margin-bottom:.5rem;">
+        <div class="sl-q">📅 ¿En qué año vendes tu Bonosushi?</div>
+        <div class="sl-hint">Cuantos más años han pasado, menos bandejotes premium le quedan al comprador — y menos vale tu Bonosushi.</div>
+        <div class="sl-row">
+          <input type="range" id="elapsed" class="green-track" min="0" max="25" step="1" value="5" oninput="updateElapsed()" aria-label="Años transcurridos desde que compraste el trato">
+          <div class="sl-val" id="elapsed-val" style="color:var(--green)">Año 5</div>
+        </div>
+        <div class="sl-ends"><span>Año 0 (recién firmado)</span><span>Año 25 (último año)</span></div>
+      </div>
+
+      <!-- RESULTADO VISUAL -->
+      <div style="margin-top:1.1rem;">
+        <div style="display:flex; justify-content:space-between; font-size:.78rem; color:var(--muted); margin-bottom:4px; font-family:var(--font); font-weight:700;">
+          <span>Bandejotes premium que le quedan al comprador</span>
+          <span id="trays-left-label">—</span>
+        </div>
+        <div style="height:18px; background:#eee; border-radius:9px; overflow:hidden;">
+          <div id="trays-bar" style="height:100%; border-radius:9px; background:var(--green); transition:width .5s cubic-bezier(.4,0,.2,1); display:flex; align-items:center; justify-content:flex-end; padding-right:8px;">
+            <span id="trays-bar-label" style="font-family:var(--font); font-weight:900; font-size:11px; color:#fff; white-space:nowrap;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:1rem;">
+        <div style="display:flex; justify-content:space-between; font-size:.78rem; color:var(--muted); margin-bottom:4px; font-family:var(--font); font-weight:700;">
+          <span>¿Por cuánto podrías vender Bonosushi?</span>
+          <span id="elapsed-price-label">—</span>
+        </div>
+        <div style="height:18px; background:#eee; border-radius:9px; overflow:hidden; position:relative;">
+          <div id="elapsed-meter" style="height:100%; border-radius:9px; transition:width .5s cubic-bezier(.4,0,.2,1), background .4s; display:flex; align-items:center; justify-content:flex-end; padding-right:8px;">
+            <span id="elapsed-meter-label" style="font-family:var(--font); font-weight:900; font-size:11px; color:#fff; white-space:nowrap;"></span>
+          </div>
+          <div style="position:absolute; left:50%; top:-3px; bottom:-3px; width:2px; background:var(--text); opacity:.2;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:.7rem; color:var(--muted); margin-top:4px; font-family:var(--font); font-weight:700;">
+          <span>1000€</span><span></span><span>8500€</span>
+        </div>
+      </div>
+
+      <div class="price-result" id="elapsed-result" style="margin-top:1rem;">
+        <div class="pr-top">
+          <span class="pr-icon" id="elapsed-icon"></span>
+          <span class="pr-headline" id="elapsed-headline"></span>
+        </div>
+        <div class="pr-body" id="elapsed-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- BLOQUE 2: LOS NÚMEROS, EN SIMPLE -->
+  <div class="sec">
+    <div class="sec-title">🔢 Ahora con números</div>
+    <p class="sec-intro">Usamos cifras grandes y redondas para que la intuición se vea bien. (En la vida real son más pequeñas — eso lo vemos luego.)</p>
+
+    <div class="card accent-blue">
+      <h3>🍱 Bonosushi: 1000€ por un bandejote premium cada año</h3>
+      <p>
+        Le das al restaurante <strong>1000€</strong>. A cambio, cada año te trae un <strong>bandejote premium</strong> por valor de <span class="tray-price">🍱 300€</span>: salmón, atún, anguila, nigiris buenos, sashimi y piezas especiales. Y al final del plazo, recuperas tus 1000€.
+      </p>
+      <p style="margin-top:.7rem;">
+        Un banquete anual de sushi <em>más</em> recuperar todo tu dinero al final. <strong>Es un trato absurdamente bueno, y lo aceptas encantado.</strong> 🎉
+      </p>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="card">
+      <h3>💸 ¿Cómo fluye el dinero?</h3>
+      <p style="margin-bottom:.6rem;">Cada año recibes tu bandejote premium, y al final te devuelven los 1000€:</p>
+      <div class="timeline">
+        <div class="tl-item"><span>Año 1</span><span class="tl-amount" style="color:var(--green)">🍱 300€</span></div>
+        <div class="tl-item"><span>Año 2</span><span class="tl-amount" style="color:var(--green)">🍱 300€</span></div>
+        <div class="tl-item"><span>Año 3</span><span class="tl-amount" style="color:var(--green)">🍱 300€</span></div>
+        <div class="tl-item dots">···</div>
+        <div class="tl-item big">
+          <span>Año 25</span>
+          <span class="tl-amount">🍱 300€</span>
+          <span style="color:var(--green); font-weight:800; font-size:.85rem;">+ 1000€ 🎉</span>
+          <span>te devuelven todo</span>
+        </div>
+      </div>
+      <p style="font-size:.82rem; color:var(--muted); font-style:italic; margin-top:.5rem;">
+        Si esperas hasta el final, recuperas tus 1000€ más todos los bandejotes premium. El problema solo aparece si necesitas vender tu Bonosushi <strong>antes</strong> de que termine.
+      </p>
+    </div>
+
+    <div class="card accent-red">
+      <h3>📈 Unos años después: el sushi se encarece</h3>
+      <p>
+        Pasan unos años y llega la inflación. El pescado bueno se dispara de precio. El restaurante sigue cumpliendo su promesa al pie de la letra — te trae cada año <strong>el bandejote de 300€ que prometió al principio</strong> — pero ahora esos 300€ compran menos pescado premium. El bandejote sigue llegando, pero viene <strong>más pobre y con producto más barato</strong>. Adiós al sashimi bueno; hola a la tortilla. 🥚
+      </p>
+      <p style="margin-top:.6rem;">
+        Mientras tanto, los restaurantes que buscan clientes nuevos ofrecen tratos frescos: <strong>"1000€ ahora, y cada año un bandejote de 500€ bien lleno."</strong>
+      </p>
+      <p style="margin-top:.6rem;">
+        La clave es esta: al principio Bonosushi parecía valer una fortuna porque estábamos en un mundo mágico: sushi casi gratis para el restaurante, precios estables y una única opción sobre la mesa. Ahora entramos en el mundo del mercado: quien compra compara tu Bonosushi antiguo con los Bonosushi nuevos.
+      </p>
+      <div class="callout" style="background:var(--red-light); border-color:#f4a0a0;">
+        Imagina que, después de comprar tu Bonosushi, aparecen nuevos Bonosushi en el escaparate. Cuestan lo mismo que costó el tuyo: <strong>1000€</strong>. También prometen devolver <strong>1000€</strong> al final. Pero traen una diferencia enorme: los nuevos dan <strong>500€ de sushi al año</strong>, mientras que el tuyo sigue dando <strong>300€ al año</strong>.<br><br>
+        Ahora el comprador compara. A <strong>1000€</strong>, tu Bonosushi antiguo resulta peor que uno nuevo: paga menos sushi cada año por el mismo precio. A <strong>800€</strong>, ya empieza a tener más sentido. A <strong>700€</strong>, mejora más. Y si el descuento se acerca a <strong>600€</strong>, la proporción vuelve a encajar: <strong>300€ al año sobre 600€ se parece a 500€ al año sobre 1000€</strong>.<br><br>
+        El comprador compara <strong>"cuánto sushi recibo por cada euro que pago"</strong>. Por eso un Bonosushi con bandejotes más pequeños puede seguir siendo interesante cuando entra suficientemente rebajado.<br><br>La cuenta exacta en bonos reales es más compleja, porque también importa cuándo recuperas los 1000€ finales. Pero la intuición básica es esta: si el pago anual es peor, el precio tiene que bajar para compensarlo.<br><br>
+        <strong>Tu Bonosushi sigue funcionando exactamente igual:</strong> entrega 300€ al año y devuelve 1000€ al final. Lo que ha cambiado es el escaparate: ahora hay Bonosushi nuevos con bandejotes más grandes.
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- BLOQUE 3: PLAYGROUND -->
+  <div class="sec">
+    <div class="sec-title">🎮 Pruébalo tú mismo</div>
+    <p class="sec-intro">Aquí ya hablamos de bonos e intereses, pero en simple. Mueve los sliders y mira cómo cambia el valor de tu Bonosushi.</p>
+
+    <div class="playground">
+      <div class="pg-header">🍱 El simulador del bandejote</div>
+      <div class="pg-body">
+        <div class="sim-grid">
+          <div class="sim-controls">
+
+            <div class="sl-block">
+              <div class="sl-q">🍱 ¿Cuánto vale el bandejote que compraste?</div>
+              <div class="sl-hint">Este es el bandejote que promete tu Bonosushi antiguo. Una vez comprado, se queda fijo: recibes esa cantidad cada año hasta el final.</div>
+              <div class="sl-row">
+                <input type="range" id="mine" class="orange-track" min="0" max="500" step="5" value="300" oninput="update()" aria-label="Valor del bandejote que compraste, en euros">
+                <div class="sl-val" id="mine-val" style="color:var(--orange)">🍱 300€</div>
+              </div>
+              <div class="sl-ends"><span>0€</span><span>500€</span></div>
+              <div class="bridge">💡 Este bandejote es el pago fijo de tu Bonosushi: cambia el mercado, pero tu trato sigue pagando lo mismo cada año.</div>
+            </div>
+
+            <div class="sl-block">
+              <div class="sl-q">🍱 ¿Cuánto valen los bandejotes nuevos del mercado?</div>
+              <div class="sl-hint">Cuanto más caro el bandejote nuevo, más interés pagan los Bonosushi nuevos. Si los nuevos pagan más que el tuyo, tu Bonosushi pierde valor; si pagan menos, gana atractivo.</div>
+              <div class="sl-row">
+                <input type="range" id="rate" class="green-track" min="0" max="500" step="5" value="500" oninput="update()" aria-label="Valor del bandejote del mercado hoy, en euros">
+                <div class="sl-val" id="rate-val" style="color:var(--green)">🍱 500€</div>
+              </div>
+              <div class="sl-ends"><span>0€</span><span>500€</span></div>
+              <div class="bridge" id="market-bridge">💡 Un bandejote nuevo de <strong>500€</strong> por cada <strong>1000€</strong> equivale a un rendimiento del <strong>50% anual</strong>. Dicho en cristiano: por cada 1000€ que pones, recibes 500€ al año.</div>
+            </div>
+
+            <div class="sl-block">
+              <div class="sl-q">📅 ¿Cuántos años faltan para que te devuelvan tus 1000€?</div>
+              <div class="sl-hint">Cuantos más años queden, más tiempo aguantas con un trato peor (o mejor) que el del mercado. Por eso el plazo importa tanto.</div>
+              <div class="sl-row">
+                <input type="range" id="years" class="blue-track" min="1" max="30" step="1" value="25" oninput="update()" aria-label="Años que faltan hasta el vencimiento del bono">
+                <div class="sl-val" id="years-val" style="color:var(--blue)">25 años</div>
+              </div>
+              <div class="sl-ends"><span>1 año</span><span>30 años</span></div>
+            </div>
+
+          </div>
+
+          <div class="sim-results">
+
+            <!-- COMPARATOR -->
+            <div class="sushi-comp">
+              <div class="sushi-comp-title">Compara los dos bandejotes — mueve los sliders y mira qué pasa</div>
+              <div class="sushi-bars">
+                <div class="sushi-col">
+                  <div class="tray-stack" id="stack-mine"></div>
+                  <div class="bar-count" id="count-mine" style="color:var(--orange)">300€</div>
+                  <div class="sushi-col-label" style="color:var(--orange)">Tu bandejote<br><small style="color:var(--muted)">(el trato que ya tienes)</small></div>
+                </div>
+                <div style="font-size:1.4rem; padding-bottom:42px; color:var(--muted)">vs</div>
+                <div class="sushi-col">
+                  <div class="tray-stack" id="stack-mkt"></div>
+                  <div class="bar-count" id="count-mkt" style="color:var(--blue)">500€</div>
+                  <div class="sushi-col-label" style="color:var(--blue)">Bandejotes nuevos<br><small style="color:var(--muted)">(los de ahora)</small></div>
+                </div>
+              </div>
+              <div class="sushi-verdict" id="sushi-verdict"></div>
+            </div>
+
+            <!-- METER -->
+            <div class="meter-wrap">
+              <div class="meter-top">
+                <span>¿Por cuánto podrías vender tu Bonosushi hoy?</span>
+                <span id="price-label">—</span>
+              </div>
+              <div class="meter-track">
+                <div class="meter-fill" id="meter-fill"><span id="meter-text"></span></div>
+                <div class="meter-par"></div>
+              </div>
+              <div class="meter-axis">
+                <span id="axis-min">200€</span>
+                <span id="axis-mid"></span>
+                <span id="axis-max">8500€</span>
+              </div>
+            </div>
+
+            <!-- RESULT -->
+            <div class="price-result" id="price-result">
+              <div class="pr-top">
+                <span class="pr-icon" id="pr-icon"></span>
+                <span class="pr-headline" id="pr-headline"></span>
+              </div>
+              <div class="pr-body" id="pr-body"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- BLOQUE 4: POR QUÉ EL PLAZO -->
+  <div class="sec">
+    <div class="sec-title">📅 ¿Por qué el plazo importa tanto?</div>
+    <div class="card accent-orange">
+      <h3>⏳ El tiempo lo amplifica todo</h3>
+      <p>
+        Si te devuelven los 1000€ en <strong>2 años</strong>, el problema es pequeño: solo aguantas 2 años con un bandejote peor que el del mercado. Casi ni lo notas.
+      </p>
+      <p style="margin-top:.7rem;">
+        Pero si te los devuelven en <strong>25 años</strong>… son 25 años recibiendo tu bandejote menos atractivo mientras los tratos nuevos vienen mucho más llenos. Para compensar esa diferencia tan larga, el precio de tu Bonosushi tiene que caer <em>muchísimo más</em>.
+      </p>
+      <p style="margin-top:.7rem;">
+        <strong>Compruébalo en el simulador:</strong> sube el valor del bandejote del mercado y arrastra el slider de años de 1 a 30. Verás cómo el valor de tu Bonosushi se desploma cuantos más años quedan.
+      </p>
+    </div>
+  </div>
+
+  <!-- BLOQUE 5: RESUMEN -->
+  <div class="sec">
+    <div class="sec-title">🔍 El resumen en 5 pasos</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1️⃣</div>
+        <div class="step-txt">Cuando compras un bono, le prestas dinero a alguien (un gobierno, una empresa) a cambio de un pago fijo cada año — el "bandejote". <strong>Ese pago no cambia nunca</strong>, pase lo que pase.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2️⃣</div>
+        <div class="step-txt">Si más adelante se emiten bonos nuevos con pagos mayores (bandejotes más llenos), <strong>tu bono antiguo pierde atractivo</strong> frente a las nuevas opciones del mercado.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3️⃣</div>
+        <div class="step-txt">Para que alguien quiera comprar tu bono antiguo, <strong>su precio tiene que bajar</strong> hasta que rinda lo mismo que los nuevos — igual que rebajas un móvil viejo cuando sale el modelo nuevo.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4️⃣</div>
+        <div class="step-txt">Lo contrario también pasa: si los bonos nuevos pagan <em>menos</em> que el tuyo, <strong>tu bono se vuelve un chollo y su precio sube</strong>. La renta es "fija", pero el precio de mercado sube y baja constantemente.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">5️⃣</div>
+        <div class="step-txt"><strong>El caso real — iShares Treasury 20+:</strong> este ETF compra bonos del gobierno americano sin parar. Cargó muchos cuando los pagos eran bajos (2020-2021). Luego los bonos nuevos empezaron a pagar mucho más (2022-2023), y sus bonos antiguos perdieron valor. Esa caída de precio es lo que ves como rentabilidad negativa. En un bono individual, quien aguanta hasta el vencimiento sigue cobrando sus bandejotes y recupera su dinero si el emisor cumple. En un ETF de bonos, la mecánica se parece, pero no es idéntica: el fondo va renovando bonos continuamente. 🍱</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Explicación educativa y simplificada · Inspirada en el iShares $ Treasury Bond 20+yr UCITS ETF (BlackRock)</p>
+    <p>Las cifras se han exagerado a propósito para que la intuición se vea clara. No es asesoramiento financiero.</p>
+  </footer>
+
+</div>
+
+<script>
+const TRAY_MINE = 300;
+const FACE = 1000;
+const TOTAL_YEARS = 25;
+
+function bondPrice(couponAmount, marketTrayValue, years) {
+  const c = couponAmount;
+  const r = marketTrayValue / FACE;
+  let p = 0;
+  for (let t = 1; t <= years; t++) p += c / Math.pow(1+r, t);
+  return p + FACE / Math.pow(1+r, years);
+}
+
+function setTrack(el, min, max) {
+  el.style.setProperty('--p', ((el.value - min)/(max - min)*100).toFixed(1)+'%');
+}
+
+function fmtEur(v) { return v.toFixed(1).replace(/\.0$/,'') + '€'; }
+
+function updateElapsed() {
+  const el = document.getElementById('elapsed');
+  const elapsed = parseInt(el.value);
+  const remaining = TOTAL_YEARS - elapsed;
+
+  setTrack(el, 0, 25);
+  document.getElementById('elapsed-val').textContent = elapsed === 0 ? 'Año 0' : elapsed === 25 ? 'Año 25' : 'Año ' + elapsed;
+
+  // Bandejas restantes
+  const traysPct = (remaining / TOTAL_YEARS) * 100;
+  document.getElementById('trays-left-label').textContent = remaining + ' bandejote' + (remaining === 1 ? '' : 's');
+  document.getElementById('trays-bar').style.width = traysPct + '%';
+  document.getElementById('trays-bar-label').textContent = remaining;
+
+  // Precio: fórmula simple sin descontar (escenario de 0% de interés)
+  // Precio = (años_restantes × TRAY_MINE) + FACE
+  const price = (remaining * TRAY_MINE) + FACE;
+
+  // Escala 1000-8500€ → 0-100%
+  const pct = Math.min(100, Math.max(0, (price - FACE) / (TRAY_MINE * TOTAL_YEARS) * 100));
+  const em = document.getElementById('elapsed-meter');
+  em.style.width = pct + '%';
+  em.style.background = 'var(--blue)';
+  document.getElementById('elapsed-meter-label').textContent = Math.round(price) + '€';
+  document.getElementById('elapsed-price-label').textContent = Math.round(price) + '€';
+
+  // Result box
+  const rb = document.getElementById('elapsed-result');
+  const ri = document.getElementById('elapsed-icon');
+  const rh = document.getElementById('elapsed-headline');
+  const rbody = document.getElementById('elapsed-body');
+  rb.className = 'price-result';
+
+  if (remaining === 0) {
+    rb.classList.add('ok');
+    ri.textContent = '🏁';
+    rh.textContent = 'Año 25 — Bonosushi vale exactamente 1000€';
+    rbody.innerHTML = 'Ya no quedan bandejotes. Solo los 1000€ que el restaurante prometió devolver desde el principio.';
+  } else if (remaining <= 3) {
+    rb.classList.add('ok');
+    ri.textContent = '📉';
+    rh.textContent = `Quedan ${remaining} bandejote${remaining === 1 ? '' : 's'} — Bonosushi vale ${Math.round(price)}€`;
+    rbody.innerHTML = `Casi no queda sushi. El grueso del valor es ya la devolución de los 1000€.`;
+  } else if (elapsed === 0) {
+    rb.classList.add('good');
+    ri.textContent = '🍱';
+    rh.textContent = `Recién firmado — Bonosushi vale ${Math.round(price)}€`;
+    rbody.innerHTML = `Quedan <strong>todos los ${remaining} bandejotes premium</strong> por cobrar más los 1000€. Es cuando Bonosushi vale más — porque el comprador recibe mucho sushi premium.`;
+  } else {
+    rb.classList.add('good');
+    ri.textContent = '🍱';
+    rh.textContent = `Año ${elapsed} — Bonosushi vale ${Math.round(price)}€`;
+    rbody.innerHTML = `Al comprador le quedan <strong>${remaining} bandejotes premium</strong> más los 1000€. Cada año que pasa, vale menos porque hay menos sushi por venir.`;
+  }
+}
+
+function renderTrays(containerId, eurValue) {
+  // 1 emoji per ~8€, min 1, max 6
+  const el = document.getElementById(containerId);
+  const count = Math.min(6, Math.max(1, Math.round(eurValue / 80)));
+  let html = '';
+  for (let i = 0; i < count; i++) html += `<span class="tray-emoji">🍱</span>`;
+  el.innerHTML = html;
+}
+
+
+function update() {
+  const mineEl = document.getElementById('mine');
+  const rEl = document.getElementById('rate');
+  const yEl = document.getElementById('years');
+  const trayMine = parseFloat(mineEl.value);  // valor del bandejote que compraste
+  const mktTray = parseFloat(rEl.value);      // valor del bandejote de mercado en euros
+  const years = parseInt(yEl.value);
+
+  setTrack(mineEl, 0, 500);
+  setTrack(rEl, 0, 500);
+  setTrack(yEl, 1, 30);
+
+  document.getElementById('mine-val').textContent = '🍱 ' + fmtEur(trayMine);
+  document.getElementById('rate-val').textContent  = '🍱 ' + fmtEur(mktTray);
+  document.getElementById('years-val').textContent = years + ' año' + (years===1?'':'s');
+  document.getElementById('market-bridge').innerHTML = `💡 Un bandejote nuevo de <strong>${fmtEur(mktTray)}</strong> por cada <strong>${fmtEur(FACE)}</strong> equivale a un rendimiento del <strong>${(mktTray / FACE * 100).toFixed(1).replace(/\.0$/,'')}% anual</strong>. Dicho en cristiano: por cada ${fmtEur(FACE)} que pones, recibes ${fmtEur(mktTray)} al año.`;
+
+  const price = bondPrice(trayMine, mktTray, years);
+  const diff  = price - FACE;
+
+  renderTrays('stack-mine', trayMine);
+  renderTrays('stack-mkt',  mktTray);
+  document.getElementById('count-mine').textContent = fmtEur(trayMine);
+  document.getElementById('count-mkt').textContent  = fmtEur(mktTray);
+
+  const tolerance = 1;
+  const verdictEl = document.getElementById('sushi-verdict');
+  if (mktTray > trayMine + tolerance) {
+    verdictEl.textContent = `Los bandejotes nuevos vienen más llenos (${fmtEur(mktTray)}) que el tuyo (${fmtEur(trayMine)}). Tu Bonosushi pierde atractivo → su precio baja.`;
+  } else if (mktTray < trayMine - tolerance) {
+    verdictEl.textContent = `Tu bandejote (${fmtEur(trayMine)}) viene más lleno que los del mercado (${fmtEur(mktTray)}). ¡Todos quieren tu Bonosushi! → su precio sube.`;
+  } else {
+    verdictEl.textContent = `Tu bandejote y los del mercado vienen parecidos. Tu Bonosushi se queda cerca de los ${fmtEur(FACE)} que pagaste.`;
+  }
+
+  const minPrice = FACE * 0.2;
+  const maxPrice = Math.max(FACE * 1.5, FACE + trayMine * years);
+  const pct = Math.min(100, Math.max(0, (price - minPrice) / (maxPrice - minPrice) * 100));
+  const mf  = document.getElementById('meter-fill');
+  mf.style.width = pct + '%';
+  mf.style.background = 'var(--blue)';
+  document.getElementById('meter-text').textContent  = Math.round(price) + '€';
+  document.getElementById('price-label').textContent = Math.round(price) + '€';
+  document.getElementById('axis-min').textContent = Math.round(minPrice) + '€';
+  document.getElementById('axis-mid').textContent = '';
+  document.getElementById('axis-max').textContent = Math.round(maxPrice) + '€';
+
+  const rb = document.getElementById('price-result');
+  const ri = document.getElementById('pr-icon');
+  const rh = document.getElementById('pr-headline');
+  const rbody = document.getElementById('pr-body');
+  rb.className = 'price-result';
+
+  if (mktTray > trayMine + tolerance) {
+    rb.classList.add('bad');
+    ri.textContent = '😬';
+    rh.textContent = `Tu Bonosushi vale ${Math.round(price)}€ — pagaste ${fmtEur(FACE)}`;
+    rbody.innerHTML = `El mercado ahora da bandejotes de ${fmtEur(mktTray)} y el tuyo solo ${fmtEur(trayMine)}. Para compensar esa diferencia durante <strong>${years} año${years===1?'':'s'}</strong>, tu Bonosushi pierde <strong>${Math.abs(diff).toFixed(0)}€ de cada ${fmtEur(FACE)}</strong>. Si tuvieras que vender hoy, perderías ese dinero. <strong>Eso es la rentabilidad negativa.</strong> Pero si aguantas hasta el final y el restaurante cumple, sigues cobrando tus bandejotes y recuperas tus ${fmtEur(FACE)}.`;
+  } else if (mktTray < trayMine - tolerance) {
+    rb.classList.add('good');
+    ri.textContent = '🎉';
+    rh.textContent = `Tu Bonosushi vale ${Math.round(price)}€ — pagaste ${fmtEur(FACE)}`;
+    rbody.innerHTML = `¡Tu bandejote de ${fmtEur(trayMine)} es mejor que los del mercado! Como todos lo quieren, tu Bonosushi sube <strong>+${Math.abs(diff).toFixed(0)}€ por cada ${fmtEur(FACE)}</strong>. Así es como un bono gana valor cuando los intereses del mercado bajan.`;
+  } else {
+    rb.classList.add('ok');
+    ri.textContent = '😐';
+    rh.textContent = `Tu Bonosushi vale ${Math.round(price)}€ — casi lo que pagaste`;
+    rbody.innerHTML = `Tu bandejote y los del mercado vienen casi iguales. Ni grandes pérdidas ni grandes ganancias.`;
+  }
+}
+setTrack(document.getElementById('mine'),  0, 500);
+setTrack(document.getElementById('rate'),  0, 500);
+setTrack(document.getElementById('years'), 1,   30);
+setTrack(document.getElementById('elapsed'), 0, 25);
+updateElapsed();
+update();
+</script>
+</body>
+</html>
