@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -107,6 +108,20 @@ hr {
   margin: 1.8rem 0 2rem;
 }
 
+.section-label {
+  font-family: var(--font);
+  font-weight: 900;
+  font-size: .82rem;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 .85rem .25rem;
+}
+
+.content-section {
+  margin-bottom: 2rem;
+}
+
 .links-grid {
   display: grid;
   gap: 1rem;
@@ -144,10 +159,12 @@ hr {
 .sushi-link.bonosushi::before { background: var(--orange); }
 .sushi-link.sushares::before { background: var(--green); }
 .sushi-link.goldmaki::before { background: var(--yellow); }
+.sushi-link.otherstuff::before { background: var(--blue); }
 
 .sushi-link.bonosushi:hover { border-color: #f4c4a8; }
 .sushi-link.sushares:hover { border-color: #80dca8; }
 .sushi-link.goldmaki:hover { border-color: #f0d080; }
+.sushi-link.otherstuff:hover { border-color: #9bbcff; }
 
 .link-top {
   display: flex;
@@ -208,33 +225,54 @@ hr {
 
   <hr>
 
-  <main class="links-grid" aria-label="Artículos de Sushinomics">
-    <a class="sushi-link bonosushi" href="./bonosushi/">
-      <div class="link-top">
-        <span class="link-title">🍱 Bonosushi: la renta fija</span>
-        <span class="link-arrow">→</span>
-      </div>
-      <p class="link-desc">Cuando el sushi siempre llega, si esperas.</p>
-    </a>
+  <main aria-label="Contenido de Sushinomics">
+    <section class="content-section" aria-labelledby="saga-title">
+      <h2 id="saga-title" class="section-label">Saga principal</h2>
 
-    <a class="sushi-link sushares" href="./sushares/">
-      <div class="link-top">
-        <span class="link-title">👨‍🍳 Sushares: las acciones</span>
-        <span class="link-arrow">→</span>
-      </div>
-      <p class="link-desc">Cuando compras un trozo de la cocina.</p>
-    </a>
+      <div class="links-grid">
+        <a class="sushi-link bonosushi" href="./bonosushi/">
+          <div class="link-top">
+            <span class="link-title">🍱 Bonosushi: la renta fija</span>
+            <span class="link-arrow">→</span>
+          </div>
+          <p class="link-desc">Cuando el sushi siempre llega, si esperas.</p>
+        </a>
 
-    <a class="sushi-link goldmaki" href="./gold-maki/">
-      <div class="link-top">
-        <span class="link-title">🥇 Gold Maki: las materias primas</span>
-        <span class="link-arrow">→</span>
+        <a class="sushi-link sushares" href="./sushares/">
+          <div class="link-top">
+            <span class="link-title">👨‍🍳 Sushares: las acciones</span>
+            <span class="link-arrow">→</span>
+          </div>
+          <p class="link-desc">Cuando compras un trozo de la cocina.</p>
+        </a>
+
+        <a class="sushi-link goldmaki" href="./gold-maki/">
+          <div class="link-top">
+            <span class="link-title">🥇 Gold Maki: las materias primas</span>
+            <span class="link-arrow">→</span>
+          </div>
+          <p class="link-desc">El ingrediente que protege tu despensa.</p>
+        </a>
       </div>
-      <p class="link-desc">El ingrediente que protege tu despensa.</p>
-    </a>
+    </section>
+
+    <section class="content-section" aria-labelledby="other-stuff-title">
+      <h2 id="other-stuff-title" class="section-label">Other Stuff</h2>
+
+      <div class="links-grid">
+        <a class="sushi-link otherstuff" href="./other-stuff/">
+          <div class="link-top">
+            <span class="link-title">🧪 Other Stuff</span>
+            <span class="link-arrow">→</span>
+          </div>
+          <p class="link-desc">Experimentos, notas y herramientas fuera de la saga principal.</p>
+        </a>
+      </div>
+    </section>
   </main>
 
   <p class="footer-note">🍣 Educación financiera simplificada · No es asesoramiento financiero</p>
 </div>
 </body>
 </html>
+```
