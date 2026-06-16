@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beckham Law vs Standard Income Tax · Catalonia 2025</title>
+<style>
+  :root {
+    --ink: #1a1a17;
+    --ink-soft: #5f5e58;
+    --paper: #f4f1e8;
+    --paper-card: #fbfaf5;
+    --line: rgba(26,26,23,0.12);
+    --line-strong: rgba(26,26,23,0.28);
+    --indigo: #2d4a63;
+    --salmon: #c2603a;
+    --green: #4a7c59;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .container { max-width: 880px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+
+  .eyebrow {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--salmon);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+  }
+  h1 em { font-style: italic; color: var(--indigo); }
+  .lede {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 64ch;
+    margin-bottom: 2.5rem;
+  }
+
+  .divider { border: none; border-top: 1px solid var(--line); margin: 2.5rem 0; }
+  .divider-thick { border: none; border-top: 2px solid var(--ink); margin: 0 0 2.5rem; width: 48px; }
+
+  h2 {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+  }
+  .section-hint {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: -0.5rem 0 1.25rem;
+  }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
+  .seg {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    padding: 8px 16px;
+    border: 1px solid var(--line-strong);
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .seg:hover { background: var(--paper-card); color: var(--ink); }
+  .seg.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  .chart-frame {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1.5rem 1.25rem 1rem;
+    margin-bottom: 1rem;
+  }
+  .chart-wrap { position: relative; width: 100%; height: 340px; }
+  .legend {
+    display: flex; gap: 24px; margin-bottom: 1.25rem;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px; color: var(--ink-soft); flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-line { width: 18px; height: 3px; border-radius: 2px; }
+
+  .table-scroll { overflow-x: auto; margin: 0 -0.25rem; }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px; min-width: 560px;
+  }
+  thead th {
+    text-align: right; padding: 10px 12px;
+    font-weight: 600; font-size: 12px; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--ink-soft);
+    border-bottom: 2px solid var(--ink);
+  }
+  thead th:first-child { text-align: left; }
+  .salary-row { cursor: pointer; transition: background 0.12s ease; }
+  .salary-row:hover { background: rgba(45,74,99,0.05); }
+  .salary-row td {
+    text-align: right; padding: 11px 12px;
+    border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums;
+  }
+  .salary-row td:first-child { text-align: left; font-weight: 600; color: var(--ink); }
+  .caret {
+    display: inline-block; width: 0; height: 0;
+    border-left: 4px solid transparent; border-right: 4px solid transparent;
+    border-top: 5px solid var(--ink-soft);
+    margin-right: 8px; vertical-align: middle;
+    transition: transform 0.2s ease;
+  }
+  .salary-row.open .caret { transform: rotate(180deg); }
+  .col-irpf { color: var(--indigo); }
+  .col-beck { color: var(--green); }
+  .saving { font-weight: 600; color: var(--salmon); }
+  .loss { font-weight: 600; color: var(--indigo); }
+
+  .plain-row td {
+    text-align: right; padding: 11px 12px;
+    border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums;
+  }
+  .plain-row:last-child td { border-bottom: none; }
+  .plain-row td:first-child { text-align: left; font-weight: 600; color: var(--ink); }
+  .plain-row td:last-child { text-align: left; }
+
+  /* Breakdown panel */
+  .detail-row td { padding: 0; border: none; }
+  .detail-inner {
+    background: var(--paper-card);
+    border-bottom: 1px solid var(--line);
+    padding: 0 1.25rem;
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+  .detail-row.open .detail-inner { max-height: 900px; padding: 1.25rem; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 620px) { .detail-grid { grid-template-columns: 1fr; gap: 1rem; } }
+  .scale-block h4 {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-soft); font-weight: 600; margin-bottom: 8px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--line);
+  }
+  .bracket {
+    display: flex; justify-content: space-between; gap: 10px;
+    font-size: 12.5px; padding: 4px 0; color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .bracket .br-range { flex: 1; }
+  .bracket .br-rate { color: var(--ink); min-width: 48px; text-align: right; }
+  .bracket .br-pay { color: var(--ink); min-width: 72px; text-align: right; font-weight: 600; }
+  .bracket.muted { opacity: 0.4; }
+  .scale-subtotal {
+    display: flex; justify-content: space-between;
+    font-size: 12.5px; font-weight: 600; color: var(--ink);
+    margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line);
+  }
+  .detail-summary {
+    grid-column: 1 / -1;
+    font-size: 13.5px; color: var(--ink);
+    background: rgba(45,74,99,0.06);
+    border-radius: 4px; padding: 12px 16px; margin-top: 4px;
+    line-height: 1.7;
+  }
+  .detail-summary strong { color: var(--indigo); }
+  .detail-summary .eff { color: var(--salmon); }
+
+  .notes {
+    background: var(--paper-card);
+    border-left: 3px solid var(--salmon);
+    border-radius: 0 4px 4px 0;
+    padding: 1.25rem 1.5rem; margin-top: 1rem;
+  }
+  .notes h3 {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 0.75rem; font-weight: 600;
+  }
+  .notes ul { list-style: none; }
+  .notes li {
+    font-size: 14.5px; color: var(--ink-soft);
+    padding-left: 1.25rem; position: relative; margin-bottom: 0.5rem;
+  }
+  .notes li:last-child { margin-bottom: 0; }
+  .notes li::before { content: "—"; position: absolute; left: 0; color: var(--salmon); }
+  .notes strong { color: var(--ink); font-weight: 600; }
+
+  .marginal-note {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13.5px; color: var(--ink-soft);
+    background: var(--paper-card); border: 1px solid var(--line);
+    border-radius: 4px; padding: 1rem 1.25rem; margin-top: 1rem; line-height: 1.7;
+  }
+  .marginal-note strong { color: var(--ink); }
+
+  footer {
+    margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12.5px; color: var(--ink-soft); line-height: 1.7;
+  }
+  .sources { margin-top: 0.75rem; }
+  .source-list { list-style: none; margin-top: 0.6rem; }
+  .source-list li { padding: 3px 0 3px 1rem; position: relative; }
+  .source-list li::before {
+    content: ""; position: absolute; left: 0; top: 11px;
+    width: 4px; height: 4px; border-radius: 50%; background: var(--salmon);
+  }
+  footer a { color: var(--indigo); text-decoration: none; border-bottom: 1px solid rgba(45,74,99,0.3); transition: border-color 0.15s ease; }
+  footer a:hover { border-bottom-color: var(--indigo); }
+
+  @media (max-width: 560px) {
+    .container { padding: 2rem 1.1rem 3rem; }
+    .legend { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="eyebrow">Saga Sushinomics · Tax regimes</div>
+  <h1>The Beckham Law <em>versus</em> standard income tax</h1>
+  <div class="lede">
+    How much tax you pay on your gross salary in Catalonia depending on which regime you fall under,
+    from €30,000 to €100,000 of annual gross pay. When the six years of the special expat regime run out,
+    you switch to the ordinary progressive scale — this is the difference.
+  </div>
+
+  <hr class="divider-thick">
+
+  <h2>At a glance</h2>
+  <div class="controls" id="controls">
+    <button class="seg active" data-mode="euros">Tax paid (€)</button>
+    <button class="seg" data-mode="effective">Effective rate (%)</button>
+    <button class="seg" data-mode="saving">Saving under Beckham (€)</button>
+  </div>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="chart-frame">
+    <div class="chart-wrap">
+      <canvas id="chart" role="img" aria-label="Comparison chart of tax paid under the Beckham Law and the standard Catalan income tax for gross salaries between 30,000 and 100,000 euros"></canvas>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <h2>Breakdown by gross salary</h2>
+  <div class="controls" id="ss-toggle">
+    <button class="seg active" data-ss="off">Income tax only</button>
+    <button class="seg" data-ss="on">Include social security</button>
+  </div>
+  <p class="section-hint" id="table-caption">Click any row to see how the effective rate is built, bracket by bracket.</p>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Gross salary</th>
+          <th id="th-std">Income tax</th>
+          <th>Eff. rate</th>
+          <th id="th-beck">Beckham</th>
+          <th>Eff. rate</th>
+          <th>Saving</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="marginal-note">
+    <strong>Marginal rate vs effective rate.</strong>
+    Tax tables usually quote the <em>marginal</em> rate — the percentage charged on your very last euro of income
+    (44% in Catalonia once you pass €60,000). But you don't pay that on your whole salary. Each slice of income is
+    taxed at its own bracket rate, and the first slices are cheap. The <em>effective</em> rate is the total tax divided
+    by the full salary, which is always lower. That effective rate is what you can fairly compare against Beckham's flat 24%.
+  </div>
+
+  <hr class="divider-thick" style="margin-top: 3.5rem;">
+
+  <div class="eyebrow">Part two · The full picture</div>
+  <h1 style="font-size: clamp(24px, 4vw, 32px);">Adding <em>social security</em></h1>
+  <div class="lede">
+    Income tax isn't the whole story. Both regimes also pay employee social security — and it's the same amount,
+    since it's the same job under the same Spanish contract. But there's a twist: those contributions are
+    tax-deductible under the standard regime and <em>not</em> under Beckham. That one difference reshapes the
+    comparison at the lower end.
+  </div>
+
+  <h2>Total take from your pay: tax + social security</h2>
+  <div class="controls" id="controls2">
+    <button class="seg active" data-mode="burden">Total burden (€)</button>
+    <button class="seg" data-mode="takehome">Take-home pay (€)</button>
+  </div>
+  <div class="legend" id="legend2"></div>
+  <div class="chart-frame">
+    <div class="chart-wrap">
+      <canvas id="chart2" role="img" aria-label="Comparison of total burden (income tax plus employee social security) under the standard regime and the Beckham Law for gross salaries between 30,000 and 100,000 euros"></canvas>
+    </div>
+  </div>
+  <p class="section-hint">For the exact figures with social security, switch on “Include social security” in the table above.</p>
+
+  <div class="marginal-note">
+    <strong>The break-even point moves up.</strong>
+    Without social security, Beckham is cheaper at every salary in this range. Add it, and the standard regime's
+    deduction makes it the better deal up to roughly €40,000 — at €30,000 Beckham actually costs about €565 more.
+    Above that, Beckham pulls ahead again and the gap keeps widening, reaching about €10,400 at €100,000.
+    The advantage keeps growing because social security is capped at €58,914: beyond that it's a flat ≈€3,820 for
+    everyone, while Beckham's flat 24% keeps beating the rising marginal rates.
+  </div>
+
+  <hr class="divider">
+
+  <div class="notes">
+    <h3>How it's calculated</h3>
+    <ul>
+      <li><strong>Standard income tax:</strong> the 2025 official scales are applied to the gross salary, summing the state scale (art. 63.1 of the Income Tax Act) and the Catalan regional scale from Decree-Law 5/2025 (art. 611-1). In part one no deductions are applied; in part two, social security is deducted from the tax base.</li>
+      <li><strong>Beckham Law:</strong> a flat 24% on the first €600,000 (47% on the excess, which never applies in this range), applied to the gross salary with no deductions.</li>
+      <li><strong>Social security (part two):</strong> the 2025 employee rate of 6.48% on the contribution base, capped at the 2025 maximum of €58,914/year. Assumed identical under both regimes (same Spanish general-regime contract). The small solidarity surcharge on pay above the cap is left out as immaterial to the comparison.</li>
+      <li><strong>Part one leaves out</strong> social security, the personal and family allowance, and the earned-income reduction, so the figures match a simple online calculator. Those reductions would lower the real standard-regime tax somewhat, especially at lower salaries.</li>
+    </ul>
+  </div>
+
+  <footer>
+    Indicative calculation, not tax advice. Scales in force for the 2025 tax year (filed in 2026),
+    for a taxpayer resident in Catalonia.
+    <div class="sources">
+      Official sources, all verified against the figures used here:
+      <ul class="source-list">
+        <li>State scale (art. 63.1 Income Tax Act) —
+          <a href="https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-general/gravamen-estatal.html" target="_blank" rel="noopener">Spanish Tax Agency, Income Tax Manual 2025</a>
+        </li>
+        <li>Catalan regional scale (art. 611-1, Decree-Law 5/2025) —
+          <a href="https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025/c15-calculo-impuesto-determinacion-cuotas-integras/gravamen-base-liquidable-general/gravamen-autonomico/comunidad-autonoma-cataluna.html" target="_blank" rel="noopener">Spanish Tax Agency, Catalonia regional scale</a>
+        </li>
+        <li>Beckham regime, flat 24% (art. 93 of Law 35/2006) —
+          <a href="https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/manual-tributacion-no-residentes/regimenes-opcionales/regimen-especial-impatriados.html" target="_blank" rel="noopener">Spanish Tax Agency, special regime for posted workers</a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  // === OFFICIAL 2025 SCALES (verified against the Tax Agency's official tax-due figures) ===
+  const STATE = [
+    [0,      12450,    0.095],
+    [12450,  20200,    0.12],
+    [20200,  35200,    0.15],
+    [35200,  60000,    0.185],
+    [60000,  300000,   0.225],
+    [300000, Infinity, 0.245],
+  ];
+  const CATALONIA = [
+    [0,      12500,    0.095],
+    [12500,  22000,    0.125],
+    [22000,  33000,    0.16],
+    [33000,  53000,    0.19],
+    [53000,  90000,    0.215],
+    [90000,  120000,   0.235],
+    [120000, 175000,   0.245],
+    [175000, Infinity, 0.255],
+  ];
+
+  function bracketDue(scale, base) {
+    let total = 0;
+    for (const [from, to, rate] of scale) {
+      if (base <= from) break;
+      total += (Math.min(base, to) - from) * rate;
+    }
+    return total;
+  }
+  const calcIncomeTax = b => bracketDue(STATE, b) + bracketDue(CATALONIA, b);
+  const calcBeckham   = b => b * 0.24;
+
+  // === SOCIAL SECURITY (2025 employee share) ===
+  const SS_RATE = 0.0648;   // 4.70 + 1.55 + 0.10 + 0.13
+  const SS_CAP  = 58914;    // max annual contribution base 2025
+  const ssWorker = g => Math.min(g, SS_CAP) * SS_RATE;
+
+  // === DATA ===
+  const salaries = [30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000];
+  const labels   = salaries.map(s => '€' + (s / 1000) + 'k');
+
+  // Income tax only
+  const tax      = salaries.map(s => Math.round(calcIncomeTax(s)));
+  const beck     = salaries.map(s => Math.round(calcBeckham(s)));
+  const saving   = salaries.map((s, i) => tax[i] - beck[i]);
+  const effTax   = salaries.map((s, i) => +(tax[i] / s * 100).toFixed(1));
+
+  // With social security (tax + SS); SS deductible under standard, not under Beckham
+  const ssArr     = salaries.map(s => Math.round(ssWorker(s)));
+  const stdTotal  = salaries.map(s => Math.round(ssWorker(s) + calcIncomeTax(s - ssWorker(s))));
+  const beckTotal = salaries.map(s => Math.round(ssWorker(s) + calcBeckham(s)));
+  const savingSS  = salaries.map((s, i) => stdTotal[i] - beckTotal[i]);
+  const effStd    = salaries.map((s, i) => +(stdTotal[i] / s * 100).toFixed(1));
+  const effBeckSS = salaries.map((s, i) => +(beckTotal[i] / s * 100).toFixed(1));
+  const stdHome   = salaries.map((s, i) => s - stdTotal[i]);
+  const beckHome  = salaries.map((s, i) => s - beckTotal[i]);
+
+  const fmtEur  = v => (v < 0 ? '−' : '') + '€' + Math.round(Math.abs(v)).toLocaleString('en-US');
+  const fmtEur2 = v => '€' + v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const fmtPct  = v => v.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
+  const fmtRange = (from, to) => '€' + from.toLocaleString('en-US') + '–' + (to === Infinity ? '∞' : '€' + to.toLocaleString('en-US'));
+
+  // === BRACKET DETAIL HTML ===
+  function scaleBlockHtml(title, scale, base) {
+    let rows = '';
+    let subtotal = 0;
+    for (const [from, to, rate] of scale) {
+      const inBracket = base > from;
+      const portion = inBracket ? (Math.min(base, to) - from) : 0;
+      const pay = portion * rate;
+      subtotal += pay;
+      const muted = inBracket ? '' : ' muted';
+      const portionText = inBracket
+        ? '€' + portion.toLocaleString('en-US') + ' × ' + (rate * 100).toFixed(1) + '%'
+        : (rate * 100).toFixed(1) + '%';
+      rows +=
+        '<div class="bracket' + muted + '">' +
+          '<span class="br-range">' + fmtRange(from, to) + '</span>' +
+          '<span class="br-rate">' + portionText + '</span>' +
+          '<span class="br-pay">' + (inBracket ? fmtEur2(pay) : '—') + '</span>' +
+        '</div>';
+    }
+    return '<div class="scale-block"><h4>' + title + '</h4>' + rows +
+      '<div class="scale-subtotal"><span>Subtotal</span><span>' + fmtEur2(subtotal) + '</span></div></div>';
+  }
+
+  function detailHtml(salary, ssOn) {
+    const ss = ssWorker(salary);
+    const base = ssOn ? salary - ss : salary;
+    const stateDue = bracketDue(STATE, base);
+    const regionDue = bracketDue(CATALONIA, base);
+    const taxDue = stateDue + regionDue;
+    const total = ssOn ? taxDue + ss : taxDue;
+    const eff = total / salary * 100;
+
+    let ssBlock = '';
+    if (ssOn) {
+      ssBlock = '<div class="scale-block" style="grid-column:1/-1">' +
+        '<h4>Social security · employee share</h4>' +
+        '<div class="bracket"><span class="br-range">€' + Math.round(Math.min(salary, SS_CAP)).toLocaleString('en-US') +
+          (salary > SS_CAP ? ' &nbsp;(capped at €58,914)' : '') + '</span>' +
+          '<span class="br-rate">× 6.48%</span>' +
+          '<span class="br-pay">' + fmtEur2(ss) + '</span></div>' +
+        '<div class="bracket muted"><span class="br-range">Then deducted from the tax base, so brackets apply to €' +
+          Math.round(base).toLocaleString('en-US') + '</span><span class="br-rate"></span><span class="br-pay"></span></div>' +
+      '</div>';
+    }
+
+    const summary = ssOn
+      ? 'Tax base = €' + salary.toLocaleString('en-US') + ' − €' + Math.round(ss).toLocaleString('en-US') +
+          ' social security = €' + Math.round(base).toLocaleString('en-US') + '.<br>' +
+        'Tax ' + fmtEur2(taxDue) + ' + social security ' + fmtEur2(ss) + ' = <strong>' + fmtEur2(total) + '</strong> total.<br>' +
+        'Divided by the €' + salary.toLocaleString('en-US') + ' salary, that is an ' +
+        '<span class="eff">effective rate of ' + eff.toFixed(2) + '%</span>.'
+      : 'State ' + fmtEur2(stateDue) + ' + Regional ' + fmtEur2(regionDue) +
+        ' = <strong>' + fmtEur2(taxDue) + '</strong> total tax.<br>' +
+        'Divided by the €' + salary.toLocaleString('en-US') + ' salary, that is an ' +
+        '<span class="eff">effective rate of ' + eff.toFixed(2) + '%</span> (versus Beckham&rsquo;s flat 24%).';
+
+    return '<div class="detail-grid">' +
+      ssBlock +
+      scaleBlockHtml('State scale', STATE, base) +
+      scaleBlockHtml('Regional scale · Catalonia', CATALONIA, base) +
+      '<div class="detail-summary">' + summary + '</div>' +
+    '</div>';
+  }
+
+  // === TABLE WITH EXPANDABLE ROWS (rebuilds on SS toggle) ===
+  const tbody = document.getElementById('tbody');
+  const thStd = document.getElementById('th-std');
+  const thBeck = document.getElementById('th-beck');
+  const tableCaption = document.getElementById('table-caption');
+
+  let ssOn = false;  // shared state: drives both the table and the chart
+
+  function rebuildTable() {
+    tbody.innerHTML = '';
+    thStd.textContent = ssOn ? 'Standard total' : 'Income tax';
+    thBeck.textContent = ssOn ? 'Beckham total' : 'Beckham';
+    tableCaption.innerHTML = ssOn
+      ? 'Income tax + employee social security. Click any row for the bracket-by-bracket build-up. A negative saving means Beckham costs more.'
+      : 'Income tax only. Click any row to see how the effective rate is built, bracket by bracket.';
+
+    salaries.forEach((s, i) => {
+      const stdVal  = ssOn ? stdTotal[i]  : tax[i];
+      const stdEff  = ssOn ? effStd[i]    : effTax[i];
+      const beckVal = ssOn ? beckTotal[i] : beck[i];
+      const beckEff = ssOn ? effBeckSS[i] : 24.0;
+      const sav     = ssOn ? savingSS[i]  : saving[i];
+      const savCell = sav >= 0
+        ? '<td class="saving">' + fmtEur(sav) + '</td>'
+        : '<td class="loss">−' + fmtEur(-sav) + '</td>';
+
+      const tr = document.createElement('tr');
+      tr.className = 'salary-row';
+      tr.innerHTML =
+        '<td><span class="caret"></span>' + fmtEur(s) + '</td>' +
+        '<td class="col-irpf">' + fmtEur(stdVal) + '</td>' +
+        '<td class="col-irpf">' + fmtPct(stdEff) + '</td>' +
+        '<td class="col-beck">' + fmtEur(beckVal) + '</td>' +
+        '<td class="col-beck">' + fmtPct(beckEff) + '</td>' +
+        savCell;
+
+      const detail = document.createElement('tr');
+      detail.className = 'detail-row';
+      detail.innerHTML = '<td colspan="6"><div class="detail-inner">' + detailHtml(s, ssOn) + '</div></td>';
+
+      tr.addEventListener('click', () => {
+        const isOpen = tr.classList.contains('open');
+        tr.classList.toggle('open', !isOpen);
+        detail.classList.toggle('open', !isOpen);
+      });
+
+      tbody.appendChild(tr);
+      tbody.appendChild(detail);
+    });
+  }
+  rebuildTable();
+
+  document.getElementById('ss-toggle').addEventListener('click', e => {
+    const btn = e.target.closest('.seg');
+    if (!btn) return;
+    document.querySelectorAll('#ss-toggle .seg').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    ssOn = btn.dataset.ss === 'on';
+    rebuildTable();
+    refreshChart();
+  });
+
+  // === CHART ===
+  let currentMode = 'euros';  // declared BEFORE the chart so tick callbacks can read it on first render
+
+  const INDIGO = '#2d4a63', GREEN = '#4a7c59', SALMON = '#c2603a';
+  const axisColor = 'rgba(26,26,23,0.45)';
+  const gridColor = 'rgba(26,26,23,0.08)';
+  Chart.defaults.font.family = "'Helvetica Neue', Arial, sans-serif";
+
+  const chart = new Chart(document.getElementById('chart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Income tax', data: tax, borderColor: INDIGO, backgroundColor: 'rgba(45,74,99,0.06)',
+          borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 6, pointBackgroundColor: INDIGO,
+          pointBorderColor: '#fbfaf5', pointBorderWidth: 1.5, fill: false, tension: 0.3 },
+        { label: 'Beckham', data: beck, borderColor: GREEN, backgroundColor: 'rgba(74,124,89,0.06)',
+          borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 6, pointBackgroundColor: GREEN,
+          pointBorderColor: '#fbfaf5', pointBorderWidth: 1.5, fill: false, tension: 0.3 },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a17', titleFont: { size: 13 }, bodyFont: { size: 13 },
+          padding: 12, cornerRadius: 4, displayColors: true,
+          callbacks: {
+            title: items => 'Salary ' + fmtEur(salaries[items[0].dataIndex]),
+            label: ctx => currentMode === 'effective'
+              ? ' ' + ctx.dataset.label + ': ' + fmtPct(ctx.parsed.y)
+              : ' ' + ctx.dataset.label + ': ' + fmtEur(ctx.parsed.y)
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: axisColor, font: { size: 12 } },
+          grid: { color: gridColor },
+          title: { display: true, text: 'Gross annual salary', color: axisColor, font: { size: 12 } }
+        },
+        y: {
+          ticks: {
+            color: axisColor, font: { size: 12 },
+            callback: v => currentMode === 'effective'
+              ? v.toLocaleString('en-US') + '%'
+              : fmtEur(v)
+          },
+          grid: { color: gridColor }
+        }
+      }
+    }
+  });
+
+  // === LEGEND + MODE SWITCH (SS-aware) ===
+  const legend = document.getElementById('legend');
+  const legendSaving =
+    '<div class="legend-item"><span class="legend-line" style="background:#c2603a"></span> Annual saving under Beckham</div>';
+  function legendCompare() {
+    return ssOn
+      ? '<div class="legend-item"><span class="legend-line" style="background:#2d4a63"></span> Standard · tax + social security</div>' +
+        '<div class="legend-item"><span class="legend-line" style="background:#4a7c59"></span> Beckham · tax + social security</div>'
+      : '<div class="legend-item"><span class="legend-line" style="background:#2d4a63"></span> Standard income tax (Catalonia)</div>' +
+        '<div class="legend-item"><span class="legend-line" style="background:#4a7c59"></span> Beckham Law (flat 24%)</div>';
+  }
+  legend.innerHTML = legendCompare();
+
+  function refreshChart() {
+    const d = chart.data.datasets;
+    if (currentMode === 'saving') {
+      d[0].data = ssOn ? savingSS : saving;
+      d[0].borderColor = SALMON;
+      d[0].pointBackgroundColor = SALMON;
+      d[1].hidden = true;
+      legend.innerHTML = legendSaving;
+    } else {
+      if (currentMode === 'euros') {
+        d[0].data = ssOn ? stdTotal : tax;
+        d[1].data = ssOn ? beckTotal : beck;
+      } else { // effective
+        d[0].data = ssOn ? effStd : effTax;
+        d[1].data = ssOn ? effBeckSS : salaries.map(() => 24.0);
+      }
+      d[0].borderColor = INDIGO;
+      d[0].pointBackgroundColor = INDIGO;
+      d[1].hidden = false;
+      legend.innerHTML = legendCompare();
+    }
+    chart.update();
+  }
+
+  function setMode(mode) {
+    currentMode = mode;
+    refreshChart();
+  }
+
+  document.getElementById('controls').addEventListener('click', e => {
+    const btn = e.target.closest('.seg');
+    if (!btn) return;
+    document.querySelectorAll('#controls .seg').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    setMode(btn.dataset.mode);
+  });
+
+  // ============================================================
+  // PART TWO — SOCIAL SECURITY CHART (data computed above)
+  // ============================================================
+
+  // Chart 2
+  let currentMode2 = 'burden';  // declared before the chart for the tick callback
+
+  const chart2 = new Chart(document.getElementById('chart2').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Standard', data: stdTotal, borderColor: INDIGO, backgroundColor: 'rgba(45,74,99,0.06)',
+          borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 6, pointBackgroundColor: INDIGO,
+          pointBorderColor: '#fbfaf5', pointBorderWidth: 1.5, fill: false, tension: 0.3 },
+        { label: 'Beckham', data: beckTotal, borderColor: GREEN, backgroundColor: 'rgba(74,124,89,0.06)',
+          borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 6, pointBackgroundColor: GREEN,
+          pointBorderColor: '#fbfaf5', pointBorderWidth: 1.5, fill: false, tension: 0.3 },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a17', titleFont: { size: 13 }, bodyFont: { size: 13 },
+          padding: 12, cornerRadius: 4, displayColors: true,
+          callbacks: {
+            title: items => 'Salary ' + fmtEur(salaries[items[0].dataIndex]),
+            label: ctx => ' ' + ctx.dataset.label + ': ' + fmtEur(ctx.parsed.y)
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: axisColor, font: { size: 12 } },
+          grid: { color: gridColor },
+          title: { display: true, text: 'Gross annual salary', color: axisColor, font: { size: 12 } }
+        },
+        y: {
+          ticks: { color: axisColor, font: { size: 12 }, callback: v => '€' + Math.round(v).toLocaleString('en-US') },
+          grid: { color: gridColor }
+        }
+      }
+    }
+  });
+
+  const legend2 = document.getElementById('legend2');
+  const legend2Burden =
+    '<div class="legend-item"><span class="legend-line" style="background:#2d4a63"></span> Standard regime · tax + social security</div>' +
+    '<div class="legend-item"><span class="legend-line" style="background:#4a7c59"></span> Beckham · tax + social security</div>';
+  const legend2Home =
+    '<div class="legend-item"><span class="legend-line" style="background:#2d4a63"></span> Standard regime · take-home pay</div>' +
+    '<div class="legend-item"><span class="legend-line" style="background:#4a7c59"></span> Beckham · take-home pay</div>';
+  legend2.innerHTML = legend2Burden;
+
+  function setMode2(mode) {
+    currentMode2 = mode;
+    if (mode === 'burden') {
+      chart2.data.datasets[0].data = stdTotal;
+      chart2.data.datasets[1].data = beckTotal;
+      legend2.innerHTML = legend2Burden;
+    } else {
+      chart2.data.datasets[0].data = stdHome;
+      chart2.data.datasets[1].data = beckHome;
+      legend2.innerHTML = legend2Home;
+    }
+    chart2.update();
+  }
+
+  document.getElementById('controls2').addEventListener('click', e => {
+    const btn = e.target.closest('.seg');
+    if (!btn) return;
+    document.querySelectorAll('#controls2 .seg').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    setMode2(btn.dataset.mode);
+  });
+</script>
+</body>
+</html>
