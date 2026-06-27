@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Cuánto se gana en España? · 100 personas, 100 sueldos</title>
+<meta name="description" content="De cada 100 asalariados en España, 67 cobran 2 SMI o menos. Pictograma e índice de percentil de la distribución del salario bruto anual según la Encuesta de Estructura Salarial 2024 (INE).">
+<meta property="og:title" content="¿Cuánto se gana en España? 100 personas, 100 sueldos">
+<meta property="og:description" content="De cada 100 asalariados, 67 cobran 2 SMI o menos. ¿Por delante de cuánta gente estás tú? · EAES 2024 (INE).">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAF7; --surface:#FFFFFF; --ink:#1B1B17; --ink-soft:#56564E; --ink-mute:#8E8E84;
+    --border:rgba(27,27,23,.12); --border-soft:rgba(27,27,23,.07);
+    --accent:#E5662E; --accent-dark:#B0481B;
+    --b1:#159C8E; --b2:#3566C7; --b3:#8049C0; --b4:#C0468C; --b5:#D7991F; --b6:#5C9A33;
+    --track:#E7E6DE;
+    --display:'Bricolage Grotesque',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --maxw:880px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
+    font-feature-settings:"tnum" 1;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(20px,5vw,56px) clamp(18px,5vw,40px)}
+  .eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-dark);margin:0 0 18px}
+  h1{font-family:var(--display);font-weight:700;line-height:1.04;letter-spacing:-.02em;font-size:clamp(30px,6.4vw,58px);margin:0 0 18px}
+  h1 .big{color:var(--accent)}
+  .lede{font-size:clamp(16px,2.4vw,19px);color:var(--ink-soft);max-width:54ch;margin:0 0 6px}
+
+  section{margin-top:clamp(40px,7vw,72px)}
+  h2{font-family:var(--display);font-weight:600;letter-spacing:-.015em;font-size:clamp(22px,3.6vw,30px);margin:0 0 6px}
+  .sub{color:var(--ink-soft);font-size:15px;margin:0 0 26px;max-width:60ch}
+
+  .picto-frame,.chart-frame,.slider-card{background:var(--surface);border:1px solid var(--border-soft);border-radius:20px}
+  .picto-frame{padding:clamp(20px,4vw,34px)}
+  .grid{display:grid;grid-template-columns:repeat(10,1fr);gap:clamp(4px,1.1vw,9px);max-width:520px;margin:0 auto}
+  .fig{width:100%;aspect-ratio:24/27;color:var(--b1);opacity:0;animation:pop .42s cubic-bezier(.2,.7,.3,1) forwards}
+  .fig svg{width:100%;height:100%;display:block}
+  .fig svg :where(circle,path){fill:currentColor;stroke:rgba(0,0,0,.14);stroke-width:.5}
+  @keyframes pop{from{opacity:0;transform:translateY(5px) scale(.9)}to{opacity:1;transform:none}}
+  .picto[data-active] .fig{opacity:.12;transition:opacity .18s}
+  .picto[data-active] .fig.on{opacity:1}
+  .picto-cap{display:flex;justify-content:space-between;align-items:baseline;gap:14px;max-width:520px;margin:18px auto 0;font-size:13px;color:var(--ink-mute)}
+  .picto-cap b{color:var(--ink);font-weight:600}
+
+  .legend{margin-top:26px;border-top:1px solid var(--border);display:grid;gap:0}
+  .lrow{display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:14px;padding:13px 6px;border-bottom:1px solid var(--border-soft);cursor:default;transition:background .15s;border-radius:8px}
+  .lrow:hover,.lrow:focus-visible{background:#F2F3F2;outline:none}
+  .sw{width:18px;height:18px;border-radius:5px;border:1px solid rgba(0,0,0,.12)}
+  .lr-main{display:flex;flex-direction:column;line-height:1.3}
+  .lr-main .t{font-weight:600;font-size:15px}
+  .lr-main .r{font-size:13px;color:var(--ink-soft)}
+  .lr-count{font-family:var(--display);font-weight:700;font-size:22px;white-space:nowrap;text-align:right}
+  .lr-count small{font-family:var(--body);font-weight:500;font-size:12px;color:var(--ink-mute);display:block;letter-spacing:.02em}
+
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .card{background:var(--surface);border:1px solid var(--border-soft);border-radius:16px;padding:22px 20px}
+  .card .num{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,40px);line-height:1;letter-spacing:-.02em}
+  .card .num.accent{color:var(--accent)}
+  .card .k{font-size:14px;color:var(--ink-soft);margin-top:10px}
+
+  /* Control percentil */
+  .slider-card{padding:clamp(20px,4vw,32px)}
+  .slider-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+  .slider-top label{font-size:14px;font-weight:600;color:var(--ink-soft)}
+  .salbox{display:flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:12px;padding:4px 12px;background:var(--bg)}
+  .salbox:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(229,102,46,.15)}
+  .sal-input{font-family:var(--display);font-weight:700;font-size:clamp(20px,4vw,28px);letter-spacing:-.02em;
+    width:5.2em;border:0;background:transparent;color:var(--ink);text-align:right;outline:none;padding:2px 0}
+  .salbox .cur{font-family:var(--display);font-weight:600;font-size:clamp(17px,3vw,22px);color:var(--ink-mute)}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:99px;background:var(--track);outline:none;margin:6px 0 4px}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--accent);border:3px solid #fff;cursor:pointer}
+  .scale-ends{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-mute);margin-bottom:24px}
+  .result-lead{font-size:clamp(17px,3vw,22px);font-weight:500;color:var(--ink);line-height:1.35;margin:0 0 8px}
+  .result-lead .result-num{font-family:var(--display);font-weight:800;color:var(--accent);font-size:1.25em;letter-spacing:-.02em}
+  .result-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:24px}
+  .result-meta p{margin:0;font-size:14.5px;color:var(--ink-soft)}
+  .result-meta p b{color:var(--ink);font-weight:600}
+  .chip{font-size:13px;font-weight:600;background:#F1ECE6;color:var(--accent-dark);padding:5px 11px;border-radius:99px;white-space:nowrap}
+  .pbar{position:relative;display:flex;height:44px;margin-top:6px}
+  .seg{height:100%} .seg:first-child{border-radius:10px 0 0 10px} .seg:last-child{border-radius:0 10px 10px 0}
+  .pmark{position:absolute;top:-9px;height:62px;width:2.5px;background:var(--ink);left:50%;transition:left .14s ease;z-index:2}
+  .pmark::after{content:attr(data-l);position:absolute;top:-22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:11.5px;font-weight:600;padding:2px 7px;border-radius:6px;white-space:nowrap}
+  .pticks{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-mute);margin-top:12px}
+
+  .chart-frame{padding:clamp(16px,3vw,26px);position:relative}
+  #hist{width:100%;height:auto;display:block;touch-action:none}
+  .hbar{transition:fill .12s} .hbar.hot{fill:var(--accent)}
+  .tick{fill:var(--ink-mute);font-size:11px}
+  .smi-line{stroke:rgba(27,27,23,.22);stroke-width:1;stroke-dasharray:2 3}
+  .smi-lab{fill:var(--ink-soft);font-size:11px;font-weight:600}
+  .med-line{stroke:var(--accent);stroke-width:1.5}
+  .med-lab{fill:var(--accent-dark);font-size:11.5px;font-weight:600}
+  .axis{stroke:var(--border);stroke-width:1}
+  #htip{position:absolute;pointer-events:none;opacity:0;transform:translate(-50%,-115%);background:var(--ink);color:#fff;font-size:12px;padding:6px 9px;border-radius:7px;white-space:nowrap;transition:opacity .1s;z-index:5}
+  #htip b{font-weight:600}
+  .chart-note{font-size:12.5px;color:var(--ink-mute);margin:14px 2px 0}
+
+  footer{margin-top:clamp(44px,7vw,76px);border-top:1px solid var(--border);padding-top:26px;font-size:13.5px;color:var(--ink-soft)}
+  footer h3{font-family:var(--display);font-weight:600;font-size:15px;color:var(--ink);margin:0 0 10px}
+  footer ul{margin:0;padding-left:18px} footer li{margin:0 0 7px}
+  footer a{color:var(--accent-dark);text-decoration:none;border-bottom:1px solid rgba(176,72,27,.3)}
+  footer a:hover{border-bottom-color:var(--accent-dark)}
+  .meta{margin-top:18px;font-size:12px;color:var(--ink-mute)}
+
+  @media (max-width:680px){ .cards{grid-template-columns:1fr} .lr-count{font-size:19px} }
+  @media (prefers-reduced-motion:reduce){ .fig{animation:none;opacity:1} *{transition:none!important} }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <p class="eyebrow">Distribución salarial en España · EAES 2024</p>
+  <h1>De cada 100 personas que trabajan, <span class="big">67</span> cobran 2&nbsp;SMI o menos</h1>
+  <p class="lede">El salario bruto anual está muy concentrado en la parte baja. Esto es lo que gana España, persona a persona.</p>
+
+  <section>
+    <div class="picto-frame">
+      <div class="grid picto" id="picto" aria-label="Pictograma: 100 figuras que representan a 100 asalariados, agrupadas por tramo salarial."></div>
+      <div class="picto-cap">
+        <span>1 figura = <b>1 de cada 100</b> asalariados</span>
+        <span>Tramos por múltiplos del <b>SMI 2024</b></span>
+      </div>
+      <noscript><p style="text-align:center;color:var(--ink-soft)">Activa JavaScript para ver el pictograma. Reparto: 23 · 44 · 19 · 8 · 3 · 3 de cada 100.</p></noscript>
+      <div class="legend" id="legend"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Lectura rápida</h2>
+    <p class="sub">La media engaña: como hay una cola de sueldos altos, la media sube por encima de lo que cobra la mayoría. La mediana describe mejor al asalariado típico.</p>
+    <div class="cards">
+      <div class="card"><div class="num">24.000&nbsp;€</div><div class="k">Mediana: el asalariado típico, justo en el centro de la distribución.</div></div>
+      <div class="card"><div class="num accent">62%</div><div class="k">Cobra <b>por debajo de la media</b> (28.254&nbsp;€). La media la estiran los de arriba.</div></div>
+      <div class="card"><div class="num">3</div><div class="k">de cada 100 superan los 79.000&nbsp;€ (5&nbsp;SMI). La cola alta es estrecha.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>¿Y tú, dónde estás?</h2>
+    <p class="sub">Escribe tu salario bruto anual (o arrastra el control) y mira por delante de cuánta gente estás y en qué tramo del SMI caes.</p>
+    <div class="slider-card">
+      <div class="slider-top">
+        <label for="salInput">Tu salario bruto anual</label>
+        <div class="salbox">
+          <input id="salInput" class="sal-input" type="text" inputmode="numeric" autocomplete="off" value="24.000" aria-label="Salario bruto anual en euros">
+          <span class="cur">€</span>
+        </div>
+      </div>
+      <input type="range" id="sal" min="0" max="100000" step="500" value="24000" aria-label="Ajustar salario">
+      <div class="scale-ends"><span>0 €</span><span>100.000 €+</span></div>
+
+      <p class="result-lead">Estás por delante del <span class="result-num" id="pctBig">52%</span> de los asalariados.</p>
+      <div class="result-meta">
+        <p id="pctSentence"></p>
+        <span class="chip" id="smiChip"></span>
+      </div>
+
+      <div class="pbar" id="pbar"></div>
+      <div class="pticks"><span>percentil 0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>La distribución completa, euro a euro</h2>
+    <p class="sub">Cada barra es un tramo de 1.000&nbsp;€, coloreada según el tramo de SMI al que pertenece. El pico está entre 16.000 y 22.000&nbsp;€; a partir de ahí la cola cae despacio hacia la derecha.</p>
+    <div class="chart-frame">
+      <div id="htip"></div>
+      <svg id="hist" viewBox="0 0 720 320" role="img" aria-label="Histograma del salario bruto anual en España. El porcentaje de trabajadores crece hasta un pico cercano a los 16.000-20.000 euros y luego desciende con una cola larga hacia los salarios altos. La mediana se sitúa en 24.000 euros."></svg>
+      <p class="chart-note">Marcas verticales = múltiplos del SMI 2024. Línea naranja = mediana (24.000&nbsp;€). Pasa el ratón o el dedo por encima para ver cada tramo.</p>
+    </div>
+  </section>
+
+  <footer>
+    <h3>Fuentes y metodología</h3>
+    <ul>
+      <li><b>Datos salariales:</b> INE — Encuesta Anual de Estructura Salarial 2024, distribución del salario bruto anual de los asalariados. <a href="https://www.ine.es/dyngs/Prensa/EAES2024.htm" target="_blank" rel="noopener">ine.es › EAES 2024</a></li>
+      <li><b>SMI 2024:</b> 1.134&nbsp;€/mes en 14 pagas = <b>15.876&nbsp;€ brutos anuales</b>. Real Decreto&nbsp;145/2024, de 6 de febrero (BOE), vía SEPE. Para los tramos se usa el redondeo de referencia 1&nbsp;SMI&nbsp;≈&nbsp;16.000&nbsp;€/año.</li>
+      <li><b>Pictograma:</b> 100 figuras = 100 asalariados. Reparto calculado sobre los microdatos y ajustado a 100 por restos mayores. El tramo superior («5&nbsp;SMI o más») agrupa todas las rentas desde 79.000&nbsp;€, incluida la cola por encima de 100.000&nbsp;€.</li>
+      <li><b>Percentil:</b> calculado sobre la distribución de microdatos (interpolación lineal entre tramos de 1.000&nbsp;€). Indica qué porcentaje de asalariados gana igual o menos que esa cifra; por encima de 100.000&nbsp;€ el dato se aproxima al «top&nbsp;1%».</li>
+      <li><b>Salario bruto, no neto:</b> las cifras son anteriores a cotizaciones y a IRPF; el sueldo que se cobra es menor.</li>
+    </ul>
+    <p class="meta">Visualización con fines divulgativos. Reparto por tramos: 23 · 44 · 19 · 8 · 3 · 3 de cada 100.</p>
+  </footer>
+
+</main>
+
+<script>
+const SMI=15876;
+const BR=[
+  {n:23,t:'1 SMI o menos',  r:'menos de 16.000 €',  c:'#159C8E', up:16000},
+  {n:44,t:'entre 1 y 2 SMI',r:'16.000 – 31.000 €',  c:'#3566C7', up:31000},
+  {n:19,t:'entre 2 y 3 SMI',r:'31.000 – 47.000 €',  c:'#8049C0', up:47000},
+  {n:8, t:'entre 3 y 4 SMI',r:'47.000 – 63.000 €',  c:'#C0468C', up:63000},
+  {n:3, t:'entre 4 y 5 SMI',r:'63.000 – 79.000 €',  c:'#D7991F', up:79000},
+  {n:3, t:'5 SMI o más',    r:'79.000 € o más',     c:'#5C9A33', up:Infinity}
+];
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const PERSON='<svg viewBox="0 0 24 27"><circle cx="12" cy="6.5" r="5"/><path d="M3 27C3 19.8 7 16 12 16s9 3.8 9 11Z"/></svg>';
+const fmt=n=>Math.round(n).toLocaleString('es-ES');
+function bracketOf(s){for(let i=0;i<BR.length;i++) if(s<=BR[i].up) return i; return 5;}
+
+/* Pictograma */
+const picto=document.getElementById('picto');
+let idx=0;
+BR.forEach((b,bi)=>{ for(let k=0;k<b.n;k++){
+  const d=document.createElement('div'); d.className='fig'; d.dataset.b=bi; d.style.color=b.c;
+  d.style.animationDelay=(reduce?0:idx*11)+'ms'; d.innerHTML=PERSON; picto.appendChild(d); idx++;
+}});
+
+/* Leyenda con hover ↔ pictograma */
+const legend=document.getElementById('legend');
+BR.forEach((b,bi)=>{
+  const row=document.createElement('div'); row.className='lrow'; row.dataset.b=bi; row.tabIndex=0;
+  row.innerHTML=`<span class="sw" style="background:${b.c}"></span>
+    <span class="lr-main"><span class="t">${b.t}</span><span class="r">${b.r}</span></span>
+    <span class="lr-count">${b.n}<small>de cada 100</small></span>`;
+  const on=()=>{picto.dataset.active=bi; picto.querySelectorAll('.fig').forEach(f=>f.classList.toggle('on',f.dataset.b==bi));};
+  const off=()=>{delete picto.dataset.active; picto.querySelectorAll('.fig.on').forEach(f=>f.classList.remove('on'));};
+  row.addEventListener('mouseenter',on); row.addEventListener('mouseleave',off);
+  row.addEventListener('focus',on); row.addEventListener('blur',off);
+  legend.appendChild(row);
+});
+
+/* Microdatos */
+const HIST=[[0,0.0],[1000,0.2301],[2000,0.2546],[3000,0.7416],[4000,0.8371],[5000,0.7741],[6000,0.7486],[7000,1.0796],[8000,1.3347],[9000,1.3265],[10000,1.3138],[11000,1.3369],[12000,1.6334],[13000,1.6876],[14000,2.5179],[15000,3.5331],[16000,3.8414],[17000,3.8302],[18000,3.819],[19000,3.6449],[20000,3.7707],[21000,3.5728],[22000,3.5426],[23000,3.1472],[24000,2.9926],[25000,2.7634],[26000,2.5287],[27000,2.3367],[28000,2.2459],[29000,2.0073],[30000,2.2836],[31000,1.7775],[32000,1.6785],[33000,1.5795],[34000,1.5229],[35000,1.4371],[36000,1.3642],[37000,1.3841],[38000,1.3249],[39000,1.2744],[40000,1.2752],[41000,1.114],[42000,1.0888],[43000,0.954],[44000,0.9497],[45000,0.8783],[46000,0.8195],[47000,0.8443],[48000,0.7245],[49000,0.7239],[50000,0.6934],[51000,0.6033],[52000,0.5783],[53000,0.4918],[54000,0.4902],[55000,0.4299],[56000,0.5792],[57000,0.3798],[58000,0.3289],[59000,0.3351],[60000,0.3317],[61000,0.2811],[62000,0.2885],[63000,0.2797],[64000,0.2508],[65000,0.2244],[66000,0.2485],[67000,0.2194],[68000,0.2057],[69000,0.1898],[70000,0.1689],[71000,0.1792],[72000,0.1938],[73000,0.1768],[74000,0.1726],[75000,0.158],[76000,0.1597],[77000,0.1257],[78000,0.1179],[79000,0.1148],[80000,0.1282],[81000,0.1044],[82000,0.1366],[83000,0.1116],[84000,0.1105],[85000,0.0968],[86000,0.0847],[87000,0.0933],[88000,0.0958],[89000,0.0926],[90000,0.0851],[91000,0.0794],[92000,0.0788],[93000,0.0774],[94000,0.077],[95000,0.0662],[96000,0.0565],[97000,0.0706],[98000,0.056],[99000,0.0756],[100000,0.0]];
+
+function percentile(x){
+  if(x<=0) return 0;
+  let acc=0;
+  for(let i=1;i<HIST.length;i++){
+    const [s,v]=HIST[i], prev=HIST[i-1][0];
+    if(x>=s){ acc+=v; } else { acc+=v*((x-prev)/(s-prev)); return acc; }
+  }
+  return acc;
+}
+
+/* Control percentil: input escribible + slider sincronizados */
+const sal=document.getElementById('sal'), salInput=document.getElementById('salInput');
+const pctBig=document.getElementById('pctBig'), sentence=document.getElementById('pctSentence');
+const smiChip=document.getElementById('smiChip'), pbar=document.getElementById('pbar');
+BR.forEach(b=>{const sg=document.createElement('div');sg.className='seg';sg.style.width=b.n+'%';sg.style.background=b.c;pbar.appendChild(sg);});
+const pmark=document.createElement('div'); pmark.className='pmark'; pbar.appendChild(pmark);
+let currentX=24000;
+
+function render(){
+  const x=currentX;
+  const p=percentile(x);
+  const below=Math.round(p), above=Math.max(0,100-below);
+  const bi=bracketOf(x);
+  const smi=(x/SMI).toFixed(1).replace('.',',');
+  pctBig.textContent=below+'%';
+  sentence.innerHTML=`El <b>${above}%</b> gana más que tú · estás en el tramo <b>${BR[bi].t}</b>.`;
+  smiChip.textContent='≈ '+smi+' SMI';
+  pmark.style.left=Math.min(100,Math.max(0,p))+'%';
+  pmark.setAttribute('data-l','P'+below);
+}
+function setX(x,{fromInput=false}={}){
+  currentX=Math.max(0,Math.min(2000000,Math.round(x)));
+  sal.value=Math.min(100000,currentX);
+  if(!fromInput) salInput.value=fmt(currentX);
+  render();
+}
+sal.addEventListener('input',()=>setX(+sal.value));
+salInput.addEventListener('input',()=>{
+  const digits=salInput.value.replace(/[^\d]/g,'');
+  setX(digits?+digits:0,{fromInput:true});
+});
+salInput.addEventListener('blur',()=>{ salInput.value=fmt(currentX); });
+setX(24000);
+
+/* Histograma coloreado por tramo */
+const SVGNS='http://www.w3.org/2000/svg', svg=document.getElementById('hist');
+const W=720,H=320,L=50,R=18,T=24,B=44, x0=L,x1=W-R,y0=H-B,y1=T, maxv=4.0,maxx=100000;
+const sx=v=>x0+(v/maxx)*(x1-x0), sy=v=>y0-(v/maxv)*(y0-y1);
+const mk=(n,a)=>{const e=document.createElementNS(SVGNS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+[0,1,2,3,4].forEach(p=>{
+  svg.appendChild(mk('line',{x1:x0,x2:x1,y1:sy(p),y2:sy(p),stroke:'rgba(27,27,23,.07)','stroke-width':1}));
+  const t=mk('text',{x:x0-8,y:sy(p)+4,'text-anchor':'end',class:'tick'});t.textContent=p+'%';svg.appendChild(t);
+});
+const bw=(x1-x0)/100*0.82;
+HIST.forEach(([s,v])=>{ if(v<=0)return;
+  const r=mk('rect',{x:sx(s)-bw/2,y:sy(v),width:bw,height:y0-sy(v),rx:1.2,class:'hbar',fill:BR[bracketOf(s)].c});
+  r.dataset.s=s; r.dataset.v=v; svg.appendChild(r);
+});
+[[16000,'1×'],[31000,'2×'],[47000,'3×'],[63000,'4×'],[79000,'5×']].forEach(([s,lab])=>{
+  svg.appendChild(mk('line',{x1:sx(s),x2:sx(s),y1:y1-4,y2:y0,class:'smi-line'}));
+  const t=mk('text',{x:sx(s),y:y1-8,'text-anchor':'middle',class:'smi-lab'});t.textContent=lab+' SMI';svg.appendChild(t);
+});
+svg.appendChild(mk('line',{x1:x0,x2:x1,y1:y0,y2:y0,class:'axis'}));
+[0,20000,40000,60000,80000,100000].forEach(s=>{
+  const t=mk('text',{x:sx(s),y:y0+18,'text-anchor':'middle',class:'tick'});t.textContent=(s/1000)+'k €';svg.appendChild(t);
+});
+svg.appendChild(mk('line',{x1:sx(24000),x2:sx(24000),y1:y1+6,y2:y0,class:'med-line'}));
+const ml=mk('text',{x:sx(24000)+6,y:y1+16,class:'med-lab'});ml.textContent='mediana 24.000 €';svg.appendChild(ml);
+
+const tip=document.getElementById('htip'), frame=svg.parentElement;
+function showTip(rect){
+  const s=+rect.dataset.s, v=+rect.dataset.v;
+  tip.innerHTML=`<b>${fmt(s)} €</b> · ${v.toFixed(2)}% de los asalariados`;
+  const rb=rect.getBoundingClientRect(), fb=frame.getBoundingClientRect();
+  tip.style.left=(rb.left-fb.left+rb.width/2)+'px'; tip.style.top=(rb.top-fb.top)+'px'; tip.style.opacity=1;
+}
+svg.querySelectorAll('.hbar').forEach(r=>{
+  r.addEventListener('mouseenter',()=>{r.classList.add('hot');showTip(r);});
+  r.addEventListener('mouseleave',()=>{r.classList.remove('hot');tip.style.opacity=0;});
+});
+svg.addEventListener('touchmove',e=>{
+  const t=e.touches[0], el=document.elementFromPoint(t.clientX,t.clientY);
+  svg.querySelectorAll('.hbar.hot').forEach(b=>b.classList.remove('hot'));
+  if(el&&el.classList.contains('hbar')){el.classList.add('hot');showTip(el);}
+},{passive:true});
+svg.addEventListener('touchend',()=>{tip.style.opacity=0;svg.querySelectorAll('.hbar.hot').forEach(b=>b.classList.remove('hot'));});
+</script>
+</body>
+</html>
